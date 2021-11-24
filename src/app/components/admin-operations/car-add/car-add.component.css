@@ -1,0 +1,27 @@
+.car-delete {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+}
+.car-data-add {
+  display: flex !important;
+}
+/* .image-upload>input {
+    display: none !important;
+  } */
+
+.file-label {
+  display: flex !important;
+
+  height: 100%;
+}
+.img-fluid {
+    cursor: pointer;
+    margin: auto;
+}
+
+.car-img-add > input {
+  display: none;
+}
