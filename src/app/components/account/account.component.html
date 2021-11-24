@@ -1,0 +1,56 @@
+<app-navi></app-navi>
+<div class="container">
+    <main>
+      <div class="py-5 text-center">
+        
+      </div>
+  
+      <div class="row g-5">
+
+        <div class="col-md-7 col-lg-8 a">
+          <h4 class="mb-3">Hesap Bilgileriniz</h4>
+          <form class="needs-validation" *ngIf="dataLoaded" [formGroup]="userAddForm">
+            <div class="row g-3">
+
+              <div class="col-sm-6">
+                <label for="firstName" class="form-label">First name</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName" placeholder="" value="{{user.firstName | titlecase}}" required>
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+  
+              <div class="col-sm-6">
+                <label for="lastName" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="" value="{{user.lastName | titlecase}}" required>
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+  
+              <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" formControlName="email" value="{{user.email}}" id="email" placeholder="you@example.com">
+                <div class="invalid-feedback">
+                  Please enter a valid email address for shipping updates.
+                </div>
+              </div>
+              <label for="password" class="form-label">Yeni Parola</label>
+              <div class="col-12 input-group mt-1">
+                <input type="text" class="form-control input-group-text" value="" formControlName="password" id="password" placeholder="Parola" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="changeClass()">Değiştir</button>
+              </div> 
+            </div>
+  
+            <hr class="my-4">          
+  
+
+  
+            <button class="w-100 btn btn-primary btn-lg" (click)="save()">Değişiklikleri kaydet</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  
+
+  </div>
