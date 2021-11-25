@@ -15,8 +15,8 @@ export class SideBarComponent implements OnInit {
   cars:Car[]
   colors: Color[]
   brands: Brand[]
-  colorId: number 
-  brandId: number
+  colorId: number =-1 // ilk değere eşitlemek için "select option"
+  brandId: number =-1 // ilk değere eşitlemek için "select option"
 
   constructor(
     private colorService:ColorService,
