@@ -26,9 +26,9 @@ export class CarService {
   }
 
   getCarsDetails():Observable<ListResponseModel<Car>> {
-    
     return this.httpClient.get<ListResponseModel<Car>>(this.apiUrl+"getcardetails");
   }
+  
   getCarsByFilter(colorId:number,brandId:number):Observable<ListResponseModel<Car>>{
     return this.httpClient.get<ListResponseModel<Car>>(this.apiUrl+"getbyfilter?colorId="+colorId+"&brandId="+brandId);
   }
