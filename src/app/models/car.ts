@@ -7,5 +7,6 @@ export interface Car{
     dailyPrice:number,
     description:string,
     brandName:string,
-    colorName:string
+    colorName:string,
+    hasImage:boolean
 }
