@@ -41,7 +41,7 @@ export class AccountComponent implements OnInit {
 
   changeClass(){
     let element = document.getElementsByClassName('input-group-text') as HTMLCollectionOf<HTMLElement>
-      element[0].className='form-control'
+      element[0].setAttribute("disabled","")
   }
 
   createUserAddForm(){
@@ -69,3 +69,4 @@ export class AccountComponent implements OnInit {
   }
 
 }
+// Back-End User Operationslarını Düzenle
