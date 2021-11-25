@@ -30,6 +30,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AdminBrandComponent } from './components/admin-operations/admin-brand/admin-brand.component';
 import { AdminColorComponent } from './components/admin-operations/admin-color/admin-color.component';
 import { BrandsColorsComponent } from './components/admin-operations/brands-colors/brands-colors.component';
+import { RentalCardComponent } from './components/rental-card/rental-card.component';
 
 
 
@@ -59,7 +60,8 @@ export function tokenGetter(){
     AccountComponent,
     AdminBrandComponent,
     AdminColorComponent,
-    BrandsColorsComponent
+    BrandsColorsComponent,
+    RentalCardComponent
   ],
   imports: [
     BrowserModule,
