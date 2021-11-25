@@ -1,0 +1,6 @@
+.img-fluid{
+    min-height: 300px;
+    max-height: 300px;
+    min-width: 420px;
+    max-width: 420px;
+}
