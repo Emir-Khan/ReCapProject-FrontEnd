@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { RentalService } from 'src/app/services/rental.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -23,10 +24,10 @@ export class NaviComponent implements OnInit {
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
       this.getUser(this.authService.getUserIdByJwt());
+      
     } else {
       this.dataLoaded = true;
     }
-    
   }
 
   getUser(userId: number) {
@@ -44,4 +45,7 @@ export class NaviComponent implements OnInit {
       this.toastrService.info('Çıkış zaten yapılmış', 'Sistem');
     } 
   }
+
+  
+  
 }
