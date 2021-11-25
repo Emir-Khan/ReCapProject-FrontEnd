@@ -98,6 +98,4 @@ export class CarDetailsComponent implements OnInit {
       this.router.navigate(["login"])
     }
   }
-
-
 }
