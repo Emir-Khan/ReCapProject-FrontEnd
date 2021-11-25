@@ -1,12 +1,19 @@
 .car-delete {
   padding-left: 0px !important;
   padding-right: 0px !important;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 500px;
+  margin-left: 50px;
+  /* margin-right for container symmetry */
+  margin-right: .75rem;
 }
 .car-data-add {
   display: flex !important;
+}
+.car-image-add{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-right: 50px;
+  /* margin-left for container symmetry */
+  margin-left: .75rem;
 }
 /* .image-upload>input {
     display: none !important;
@@ -18,10 +25,11 @@
   height: 100%;
 }
 .img-fluid {
-    cursor: pointer;
     margin: auto;
 }
-
+.car-img{
+  cursor: pointer;
+}
 .car-img-add > input {
   display: none;
 }

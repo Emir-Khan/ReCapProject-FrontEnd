@@ -6,6 +6,7 @@ import { Brand } from 'src/app/models/brand';
 import { Car } from 'src/app/models/car';
 import { Color } from 'src/app/models/color';
 import { BrandService } from 'src/app/services/brand.service';
+import { CarImageService } from 'src/app/services/car-image.service';
 import { CarService } from 'src/app/services/car.service';
 import { ColorService } from 'src/app/services/color.service';
 import { environment } from 'src/environments/environment';
@@ -35,7 +36,8 @@ export class CarAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     private carService: CarService,
     private toastService: ToastrService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private carImageService:CarImageService
   ) { }
 
   ngOnInit(): void {
@@ -88,6 +90,7 @@ export class CarAddComponent implements OnInit {
       console.log("tıklandı")
       this.httpClient.post(environment.baseUrl + "/carimages/add?CarId=" + carImageModule.carId, fd).subscribe(response => {
         this.toastService.info("Yüklendi", "Sistem")
+        this.getCars()
       })
     } else {
       this.toastService.error("Formunuz Eksik", "Hata")
@@ -96,7 +99,7 @@ export class CarAddComponent implements OnInit {
   }
 
   getCars() {
-    this.carService.getCars().subscribe((response) => {
+    this.carService.getCarsDetails().subscribe((response) => {
       this.cars = response.data;
     });
   }
@@ -123,8 +126,9 @@ export class CarAddComponent implements OnInit {
       console.log(carModule.brandId)
       this.carService.addCar(carModule).subscribe((response) => {
         this.toastService.success(response.message, 'İşlem Başarılı');
+        this.getCars()
       }, responseErr => {
-        this.toastService.error(responseErr.err, "Hata")
+        this.toastService.error("Girdiğiniz Araba Adı kullanımda", "Hata")
       });
     } else {
       this.toastService.error('Formunuz Eksik', 'Hata');
@@ -134,12 +138,17 @@ export class CarAddComponent implements OnInit {
   delete() {
     if (this.deleteCarForm.valid) {
       let deleteModule = Object.assign({}, this.deleteCarForm.value)
-      deleteModule.carId = parseInt(deleteModule.carId)
-      console.log(deleteModule)
+      this.carImageService.getImagesByCarId(deleteModule.carId).subscribe(response=>{
+        this.carImageService.deleteImage(response.data[0]).subscribe(response=>{
+          this.toastService.info(response.message,"Sistem")
+        })
+      })
       this.carService.deleteCar(deleteModule).subscribe(response => {
         this.toastService.success(response.message, "İşlem Başarılı")
+        this.getCars()
       })
+    }else{
+      this.toastService.error("Formunuz Eksik","Hata")
     }
   }
-
 }

@@ -1,25 +1,6 @@
 <app-navi></app-navi>
 <div class="container">
 
-    <div class="card d-none car-delete border-danger mb-3 mt-3 col">
-        <div class="card-header">Araba Sil</div>
-        <div class="card-body text-danger">
-            <form [formGroup]="deleteCarForm">
-                <div class="mb-3">
-                    <label for="id">Araba ID</label>
-                    <div class="form-group">
-                        <input type="text" id="id" formControlName="carId" class="form-control" placeholder="Araba ID">
-                    </div>
-                </div>
-
-            </form>
-
-        </div>
-        <div class="card-footer">
-            <button class="btn btn-fill btn-danger" (click)="delete()">Sil</button>
-        </div>
-    </div>
-
     <div class="card mb-3 mt-3" style="width: 100%">
         <div class="row g-0">
             <div class="col-md-4 car-data-add">
@@ -92,43 +73,78 @@
         </div>
     </div>
 
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4 car-img-add">
-                <label for="file-input" class="file-label">
-                    <img [src]="imageSrc" class="img-fluid" alt="...">
-                </label>
-                <input id="file-input" (change)="onFileSelected($event)" type="file">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Araba Resimi Ekle</h5>
-
-                    <form [formGroup]="addCarImageForm">
-                        <div class="mb-3">
-                            <label for="carIdForImage">Araba ID</label>
-                            <div class="form-group">
-                                <input type="number" id="carIdForImage" formControlName="carId" class="form-control"
-                                    placeholder="Araba ID">
-                            </div>
-                        </div>
-                    </form>
-
-                    <p class="card-text"><small class="text-muted">Sadece Araba ID ve Resim gerekir</small> <button
-                            class="btn btn-primary" (click)="onUpload()" style="float: right;">Ekle</button></p>
+    <div class="row">
+        <div class="card car-image-add mb-3 col">
+            <div class="row g-0">
+                <div class="col-md-4 car-img-add">
+                    <label for="file-input" class="file-label">
+                        <img [src]="imageSrc" class="img-fluid car-img" alt="...">
+                    </label>
+                    <input id="file-input" accept=".jpg,.png" (change)="onFileSelected($event)" type="file">
                 </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Araba Resimi Ekle</h5>
+
+                        <form [formGroup]="addCarImageForm">
+                            <div class="mb-3">
+                                <label for="carIdForImage">Araba ID</label>
+                                <div class="form-group">
+                                    <input type="number" id="carIdForImage" formControlName="carId" class="form-control"
+                                        placeholder="Araba ID">
+                                </div>
+                            </div>
+                        </form>
+
+                        <p class="card-text"><small class="text-muted">Sadece Araba ID ve Resim gerekir</small> <button
+                                class="btn btn-primary" (click)="onUpload()" style="float: right;">Ekle</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card car-delete border-danger mb-3 col">
+            <div class="card-header">Araba Ve Resmini Sil</div>
+            <div class="card-body text-danger">
+                <form [formGroup]="deleteCarForm">
+                    <div class="mb-3">
+                        <label for="id">Araba ID</label>
+                        <div class="form-group">
+                            <input type="number" id="id" formControlName="carId" class="form-control"
+                                placeholder="Araba ID">
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-fill btn-danger" (click)="delete()">Sil</button>
             </div>
         </div>
     </div>
     <table class="table table-striped">
         <thead>
-            <th>id</th>
-            <th>brandId</th>
+            <th>Araba ID</th>
+            <th>Marka ID</th>
+            <th>Renk ID</th>
+            <th>Araba Adı</th>
+            <th>Marka Adı</th>
+            <th>Renk Adı</th>
+            <th>Model Yılı</th>
+            <th>Günlük Bedeli</th>
+            <th>Resimi Var Mı?</th>
         </thead>
         <tbody>
             <tr *ngFor="let car of cars">
                 <td>{{car.carId}}</td>
                 <td>{{car.brandId}}</td>
+                <td>{{car.colorId}}</td>
+                <td>{{car.carName}}</td>
+                <td>{{car.brandName}}</td>
+                <td>{{car.colorName}}</td>
+                <td>{{car.modelYear}}</td>
+                <td>{{car.dailyPrice}}</td>
+                <td>{{car.hasImage}}</td>
             </tr>
 
         </tbody>
