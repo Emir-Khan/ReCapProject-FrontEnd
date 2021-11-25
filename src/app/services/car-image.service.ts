@@ -10,20 +10,24 @@ import { ResponseModel } from '../models/responseModel';
   providedIn: 'root'
 })
 export class CarImageService {
-  apiUrl=environment.baseUrl+"/carimages"
+  apiUrl=environment.baseUrl+"/carimages/"
 
   constructor(private httpClient:HttpClient) { }
 
   addImageByCarId(fd:FormData,carId:number){
-    this.httpClient.post(environment.baseUrl+"/carimages/add?CarId="+carId,fd)
+    this.httpClient.post(this.apiUrl+"add?CarId="+carId,fd)
+  }
+
+  deleteImage(carImage:CarImage):Observable<ResponseModel>{
+    return this.httpClient.post<ResponseModel>(this.apiUrl + "delete", carImage);
   }
 
   getImagesByCarId(id: number): Observable<ListResponseModel<CarImage>> {
     return this.httpClient.get<ListResponseModel<CarImage>>(
-      `${this.apiUrl}/getcarimagebycarid?id=${id}`
+      `${this.apiUrl}getcarimagebycarid?id=${id}`
     );
   }
   getCarImageUrl(id: number): string {
-    return `${this.apiUrl}/getfilebyid?id=${id}`;
+    return `${this.apiUrl}getfilebyid?id=${id}`;
   }
 }
