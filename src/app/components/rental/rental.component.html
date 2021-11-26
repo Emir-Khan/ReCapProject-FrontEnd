@@ -1,12 +1,8 @@
-<app-navi></app-navi>
-<div class="container">
-  <div class="mb-3">
-    <label for="filterText" class="form-label">Araba Ara</label>
-    <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Araba arayınız">
-  </div>
-  <div *ngIf="filterText" class="alert alert-success">
-    {{filterText}} aradınız.
-  </div>
-  <app-rental-card [rental]="rental" *ngFor="let rental of rentals"></app-rental-card>
-</div>
-<!-- UI Düzenle ve getleri düzelt -->
+<body>
+    <app-navi></app-navi>
+    <div class="container">
+      <h1 class="rental-header">Rentals</h1>
+      <app-rental-card [rental]="rental" *ngFor="let rental of rentals"></app-rental-card>
+    </div>
+  <app-footer></app-footer>
+</body>

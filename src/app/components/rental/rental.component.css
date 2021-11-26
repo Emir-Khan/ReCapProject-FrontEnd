@@ -1,0 +1,14 @@
+html,
+body {
+  height: 100% !important;
+  background-color: rgb(15, 202, 235);
+}
+.container{
+  min-height: 100vh !important;
+}
+.rental-header {
+  text-align: center;
+  font-family: "Road Rage", cursive;
+  font-size: 75px;
+  color: black;
+}
