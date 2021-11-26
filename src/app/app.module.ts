@@ -31,6 +31,8 @@ import { AdminBrandComponent } from './components/admin-operations/admin-brand/a
 import { AdminColorComponent } from './components/admin-operations/admin-color/admin-color.component';
 import { BrandsColorsComponent } from './components/admin-operations/brands-colors/brands-colors.component';
 import { RentalCardComponent } from './components/rental-card/rental-card.component';
+import { FooterComponent } from './components/footer/footer.component';
+
 
 
 
@@ -61,7 +63,8 @@ export function tokenGetter(){
     AdminBrandComponent,
     AdminColorComponent,
     BrandsColorsComponent,
-    RentalCardComponent
+    RentalCardComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
