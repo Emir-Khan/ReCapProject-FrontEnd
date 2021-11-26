@@ -50,9 +50,9 @@ export class SideBarComponent implements OnInit {
     if(colorId==-1&&brandId==-1){
       return ""
     }else if(colorId==-1){
-      return "cars/search/brand/"+brandId
+      return "/cars/search/brand/"+brandId
     }else if(brandId==-1){  
-      return "cars/search/color/"+colorId
+      return "/cars/search/color/"+colorId
     }else{
       return "/cars/search/color/"+colorId+"/brand/"+brandId
     }
