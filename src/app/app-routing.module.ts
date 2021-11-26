@@ -28,6 +28,7 @@ const routes: Routes = [
   {path:"cars/search/color/:colorId",component:CarComponent},
   {path:"cars/search/brand/:brandId",component:CarComponent},
   {path:"cars/search/color/:colorId/brand/:brandId",component:CarComponent},
+  {path:"cars/search/brand/:brandId/color/:colorId",component:CarComponent},
   {path:"carimage",component:CarImagesComponent},
   {path:"cars/:carId", component:CarDetailsComponent},
 
