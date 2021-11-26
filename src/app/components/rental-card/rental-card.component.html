@@ -1,23 +1,24 @@
 <app-spinner *ngIf="!dataLoaded"></app-spinner>
-<div class="card mb-3" *ngIf="dataLoaded">
+<div [class]="card" *ngIf="dataLoaded && cardLoaded">
     <div class="row g-0">
-        <div class="col-md-4">
-            <img src="{{carImageUrl}}" class="img-fluid border-end rounded-start" alt="{{rental.carName}}">
+        <div class="col-md-4 img-box">
+            <span id="badge" [class]="badge">{{badgeText}}</span>
+            <img src="{{carImageUrl}}" class="img-fluid border-end rounded-start" alt="{{car.carName}}">
         </div>
         <div class="col-md-8">
-            <div class="card-body">
+            <div class="card-body" *ngIf="dataLoaded">
                 <h5 class="card-title">{{car.carName}}</h5>
                 <p class="card-text">{{car.description}}</p>
-                <p class="card-text"><small class="text-muted">Başlangıç: {{rental.rentDate | date:"medium"}} Bitiş:
+                <p class="card-text"><small [class]="textColor">Başlangıç: {{rental.rentDate | date:"medium"}} Bitiş:
                         {{rental.returnDate | date:"medium"}}</small></p>
                 <div class="row">
                     <ul class="list-group col p-3">
-                        <li class="list-group-item"><b>Marka:</b> {{car.brandName}}</li>
-                        <li class="list-group-item"><b>Renk:</b> {{car.colorName}}</li>
+                        <li [class]="listItem"><b class="list-text">Marka:</b> {{car.brandName}}</li>
+                        <li [class]="listItem"><b class="list-text">Renk:</b> {{car.colorName}}</li>
                     </ul>
                     <ul class="list-group col p-3">
-                        <li class="list-group-item"><b>Model Yılı:</b> {{car.modelYear}}</li>
-                        <li class="list-group-item"><b>Günlük ücret:</b><span class="text-success"> ${{car.dailyPrice}}</span></li>
+                        <li [class]="listItem"><b class="list-text">Model Yılı:</b> {{car.modelYear}}</li>
+                        <li [class]="listItem"><b class="list-text">Günlük ücret:</b><span class="text-success"> ${{car.dailyPrice}}</span></li>
                     </ul>
                 </div>
             </div>
