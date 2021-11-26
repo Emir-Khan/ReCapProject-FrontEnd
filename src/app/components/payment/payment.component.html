@@ -1,24 +1,29 @@
 <body class="text-center">
 
     <main class="form-signin">
-        <form [formGroup]="creditAddForm">
+        <form [formGroup]="creditAddForm" autocomplete="off">
+            <img class="mb-4" src="../../../assets/img/bu-logoyu-kesinlikle-internetten-bulmadım.jpg" alt="" width="100"
+                height="100" />
             <h1 class="h3 mb-3 fw-normal">Ödeme Bilgilerinizi Giriniz</h1>
             <div class="row">
 
                 <div class="form-floating">
-                    <input type="number" max="16" formControlName="cardNumber" class="form-control" id="floatingInput" placeholder="0000 0000 0000 0000" required>
+                    <input type="text" max="16" formControlName="cardNumber" class="form-control" id="credit-card"
+                        placeholder="0000 0000 0000 0000" required>
                     <label for="floatingInput">Kart No</label>
                 </div>
-                <div class="form-floating mt-1" >
-                    <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password" required>
+                <div class="form-floating mt-1">
+                    <input type="password" class="form-control" id="floatingPassword" formControlName="password"
+                        placeholder="Password" required>
                     <label for="floatingPassword">Password</label>
                 </div>
-                <div class="form-floating col-6 mt-1" >
-                    <input type="datetime-local" formControlName="expiryDate" class="form-control" id="month" placeholder="MM YY" required>
+                <div class="form-floating col-6 mt-1">
+                    <input type="datetime-local" formControlName="expiryDate" class="form-control" id="month"
+                        placeholder="MM YY" required>
                     <label for="floatingPassword">MM YY</label>
                 </div>
 
-                <div class="form-floating col-4 mt-1" style="margin-left: 5px;" >
+                <div class="form-floating col-4 mt-1" style="margin-left: 5px;">
                     <input type="number" formControlName="cvv" class="form-control" id="cvv" placeholder="CVV" required>
                     <label for="floatingPassword">CVV</label>
                 </div>
