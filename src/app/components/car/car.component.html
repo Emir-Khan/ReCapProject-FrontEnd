@@ -1,26 +1,29 @@
-<app-navi></app-navi>
-<div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <app-side-bar></app-side-bar>
-    </div>
-    
-
-    <div class="col-md-9">
-      <div class="mb-3">
-        <label for="filterText" class="form-label">Araba Ara</label>
-        <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Araba arayınız">
-      </div>
-      <div *ngIf="filterText" class="alert alert-success">
-        {{filterText}} aradınız.
-      </div>
-      <p class="text-muted mt-1">Arabalar</p>
-      <app-spinner *ngIf="!dataLoaded"></app-spinner>
-      <div class="row" *ngIf="dataLoaded">
-        <app-car-images class="col-6" [car]="car" *ngFor="let car of cars | carFilter:filterText"></app-car-images>
+<body>
+  <app-navi></app-navi>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <app-side-bar></app-side-bar>
       </div>
 
+
+      <div class="col-md-9">
+        <div class="mb-3">
+          <label for="filterText" class="form-label">Araba Ara</label>
+          <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Araba arayınız">
+        </div>
+        <div *ngIf="filterText" class="alert alert-success">
+          {{filterText}} aradınız.
+        </div>
+        <p class="text-muted mt-1">Arabalar</p>
+        <app-spinner *ngIf="!dataLoaded"></app-spinner>
+        <div class="row" *ngIf="dataLoaded">
+          <app-car-images class="col-6" [car]="car" *ngFor="let car of cars | carFilter:filterText"></app-car-images>
+        </div>
+
+      </div>
     </div>
+
   </div>
-
-</div>
+  <app-footer></app-footer>
+</body>
