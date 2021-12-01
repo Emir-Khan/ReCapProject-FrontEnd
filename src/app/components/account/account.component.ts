@@ -5,7 +5,6 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import {FormGroup,FormBuilder,FormControl,Validator, Validators} from "@angular/forms"
-import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-account',
@@ -28,7 +27,6 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo();
-  
   }
 
   getUserInfo(){
