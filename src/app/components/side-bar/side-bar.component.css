@@ -15,3 +15,12 @@
     transition: background 1s,border 1s;
     border-color: red;
 }
+
+.filter-select{
+    padding-left: 0 !important;
+}
+
+form{
+    position: sticky;
+    top: 0;  
+}

@@ -1,5 +1,5 @@
 <form>
-    <div class="col">
+    <div class="col filter-select">
         <label for="colors">Renkler</label>
         <select name="colors" id="colors" class="form-select form-select-sm" [(ngModel)]="colorId">
             <option selected value="-1">All</option>
@@ -7,7 +7,7 @@
                 {{color.colorName}}</option>
         </select>
     </div>
-    <div class="col mb-3">
+    <div class="col mb-3 filter-select">
         <label for="brands">Markalar</label>
         <select name="brands" id="brands" class="form-select form-select-sm" [(ngModel)]="brandId">
             <option selected value="-1">All</option>
