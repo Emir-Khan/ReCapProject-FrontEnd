@@ -8,7 +8,7 @@ body {
 }
 .rental-header {
   text-align: center;
-  font-family: "Road Rage", cursive;
+  font-family: "Road Rage", cursive !important;
   font-size: 75px;
   color: black;
 }
