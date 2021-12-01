@@ -5,6 +5,7 @@ import { AdminBrandComponent } from './components/admin-operations/admin-brand/a
 import { AdminColorComponent } from './components/admin-operations/admin-color/admin-color.component';
 import { BrandsColorsComponent } from './components/admin-operations/brands-colors/brands-colors.component';
 import { CarAddComponent } from './components/admin-operations/car-add/car-add.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { CarDetailsComponent } from './components/car-details/car-details.component';
 import { CarImagesComponent } from './components/car-images/car-images.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path:"carimage",component:CarImagesComponent},
   {path:"cars/:carId", component:CarDetailsComponent},
 
+  {path:"admin/panel",component:AdminPanelComponent},
   {path:"admin/cars",component:CarAddComponent, canActivate:[LoginGuard,AccessGuard]},
   {path:"admin/brands-colors",component:BrandsColorsComponent, canActivate:[LoginGuard,AccessGuard]},
 
