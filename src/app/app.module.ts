@@ -5,6 +5,7 @@ import {FormsModule,ReactiveFormsModule} from "@angular/forms"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {JwtModule} from "@auth0/angular-jwt"
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CarComponent } from './components/car/car.component';
@@ -32,6 +33,7 @@ import { AdminColorComponent } from './components/admin-operations/admin-color/a
 import { BrandsColorsComponent } from './components/admin-operations/brands-colors/brands-colors.component';
 import { RentalCardComponent } from './components/rental-card/rental-card.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 
 
@@ -64,7 +66,8 @@ export function tokenGetter(){
     AdminColorComponent,
     BrandsColorsComponent,
     RentalCardComponent,
-    FooterComponent
+    FooterComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserModule,
