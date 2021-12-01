@@ -1,0 +1,12 @@
+#ccsingle svg {
+    width: 100px !important;
+    max-height: 60px !important;
+}
+
+.ccicon {
+    height: 38px;
+    position: absolute;
+    right: 6px;
+    top: calc(70% - 17px);
+    width: 60px;
+}
