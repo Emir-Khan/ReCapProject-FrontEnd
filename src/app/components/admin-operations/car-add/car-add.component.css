@@ -3,17 +3,17 @@
   padding-right: 0px !important;
   margin-left: 50px;
   /* margin-right for container symmetry */
-  margin-right: .75rem;
+  margin-right: 0.75rem;
 }
 .car-data-add {
   display: flex !important;
 }
-.car-image-add{
+.car-image-add {
   padding-left: 0px !important;
   padding-right: 0px !important;
   margin-right: 50px;
   /* margin-left for container symmetry */
-  margin-left: .75rem;
+  margin-left: 0.75rem;
 }
 /* .image-upload>input {
     display: none !important;
@@ -25,11 +25,19 @@
   height: 100%;
 }
 .img-fluid {
-    margin: auto;
+  margin: auto;
 }
-.car-img{
+.car-img {
   cursor: pointer;
 }
 .car-img-add > input {
   display: none;
+}
+label {
+  font-weight: 400 !important;
+}
+.card-title {
+  float: none !important;
+  font-size: 1.25rem;
+  font-weight: 500 !important;
 }

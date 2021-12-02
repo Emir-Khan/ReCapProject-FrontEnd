@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,17 +15,19 @@ export class NaviComponent implements OnInit {
   user: User;
   dataLoaded: boolean = false;
   authenticated: boolean = false;
+  isAdmin: boolean = false
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private jwtHelper:JwtHelperService
+  ) { }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
       this.getUser(this.authService.getUserIdByJwt());
-      
+      this.isAdmin = this.isUserAdmin()
     } else {
       this.dataLoaded = true;
     }
@@ -43,9 +46,28 @@ export class NaviComponent implements OnInit {
       this.toastrService.info('Çıkış yapıldı', 'Sistem');
     } else {
       this.toastrService.info('Çıkış zaten yapılmış', 'Sistem');
-    } 
+    }
   }
 
-  
-  
+  isUserAdmin() {
+    var role = this.jwtHelper.decodeToken(localStorage.getItem('token'))[
+      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+    ];
+    console.log(role)
+    // If role is an array
+    if (typeof role == "object") {
+      for (let i = 0; i < role.length; i++) {
+        if (role[i] == 'admin' || role[i] == 'car.add') {
+          return true;
+        }
+      }
+    }
+
+    // If role is an string
+    if (role == 'admin' || role == 'car.add') {
+      return true;
+    }
+    return false
+  }
+
 }

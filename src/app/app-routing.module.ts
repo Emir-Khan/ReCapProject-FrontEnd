@@ -33,7 +33,7 @@ const routes: Routes = [
   {path:"carimage",component:CarImagesComponent},
   {path:"cars/:carId", component:CarDetailsComponent},
 
-  {path:"admin/panel",component:AdminPanelComponent},
+  {path:"admin/panel",component:AdminPanelComponent,canActivate:[LoginGuard,AccessGuard]},
   {path:"admin/cars",component:CarAddComponent, canActivate:[LoginGuard,AccessGuard]},
   {path:"admin/brands-colors",component:BrandsColorsComponent, canActivate:[LoginGuard,AccessGuard]},
 
