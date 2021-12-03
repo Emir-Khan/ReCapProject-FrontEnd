@@ -1,0 +1,9 @@
+
+
+::ng-deep #card-image {
+  width: 420px !important;
+}
+::ng-deep #card-list {
+    width: 50% !important;
+    margin:auto;
+  }
