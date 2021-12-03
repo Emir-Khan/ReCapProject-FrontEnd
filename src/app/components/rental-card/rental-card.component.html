@@ -1,11 +1,11 @@
 <app-spinner *ngIf="!dataLoaded"></app-spinner>
 <div [class]="card" *ngIf="dataLoaded && cardLoaded">
     <div class="row g-0">
-        <div class="col-md-4 img-box">
+        <div class="col-md-4 img-box" id="card-image">
             <span id="badge" [class]="badge">{{badgeText}}</span>
             <img src="{{carImageUrl}}" class="img-fluid border-end rounded-start" alt="{{car.carName}}">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" id="card-list">
             <div class="card-body" *ngIf="dataLoaded">
                 <h5 class="card-title">{{car.carName}}</h5>
                 <p class="card-text">{{car.description}}</p>
