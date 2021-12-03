@@ -4,11 +4,10 @@ import { Car } from 'src/app/models/car';
 import { CarImage } from 'src/app/models/carImage';
 import { CarImageService } from 'src/app/services/car-image.service';
 import { CarService } from 'src/app/services/car.service';
-import {FormGroup,FormBuilder,FormControl,Validator, Validators} from "@angular/forms"
+import { FormGroup, FormBuilder, Validators} from "@angular/forms"
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { RentalService } from 'src/app/services/rental.service';
-import { Rental } from 'src/app/models/rental';
 
 @Component({
   selector: 'app-car-details',
