@@ -1,8 +1,8 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validator, Validators } from "@angular/forms"
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms"
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CreditService } from 'src/app/services/credit.service';
+import { Rental } from 'src/app/models/rental';
 import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
@@ -11,22 +11,20 @@ import { RentalService } from 'src/app/services/rental.service';
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-
   creditAddForm: FormGroup
+  rental: Rental
 
   constructor(
     private formBuilder: FormBuilder,
-    private creditService: CreditService,
     private rentService: RentalService,
     private toastrService: ToastrService,
     private route: Router,
-    private renderer: Renderer2,
-    private readonly elementRef: ElementRef
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
     this.createCardAddForm()
-    
+
   }
 
   createCardAddForm() {
@@ -39,10 +37,11 @@ export class PaymentComponent implements OnInit {
     this.load()
   }
 
-  load(){
+  load() {
     console.log("working")
     const script = this.renderer.createElement('script');
     script.src = 'assets/dist/js/payment.js';
+    script.id = 'paymentScript'
     script.onload = () => {
       console.log('script loaded');
 
@@ -71,7 +70,12 @@ export class PaymentComponent implements OnInit {
         this.rentService.addRental(rentModule).subscribe(response => {
           this.toastrService.info(response.message, "Sistem")
           this.toastrService.success("Ödeme Başarılı", "Başarı")
-          this.route.navigate([""])
+          this.route.navigate([''])
+            .then(() => {
+              window.location.reload();
+            });
+        },responseErr=>{
+          this.toastrService.error(responseErr.err,"Hata")
         })
       } else {
         this.toastrService.error("Son Kullanım Tarihi Geçersiz")
