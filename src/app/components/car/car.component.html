@@ -18,7 +18,7 @@
         <p class="text-bold mt-1">Arabalar</p>
         <app-spinner *ngIf="!dataLoaded"></app-spinner>
         <div class="row" *ngIf="dataLoaded">
-          <app-car-images class="col-4" [car]="car" *ngFor="let car of cars | carFilter:filterText"></app-car-images>
+          <app-car-images class="col-md-4" [car]="car" *ngFor="let car of cars | carFilter:filterText"></app-car-images>
         </div>
 
       </div>
