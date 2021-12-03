@@ -67,4 +67,3 @@ export class AccountComponent implements OnInit {
   }
 
 }
-// Back-End User Operationslarını Düzenle
