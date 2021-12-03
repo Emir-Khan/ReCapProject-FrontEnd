@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
-import {FormGroup,FormBuilder,FormControl,Validator, Validators} from "@angular/forms"
+import {FormGroup,FormBuilder, Validators} from "@angular/forms"
 
 @Component({
   selector: 'app-account',
