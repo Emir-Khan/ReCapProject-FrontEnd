@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CarComponent } from './components/car/car.component';
 import { BrandComponent } from './components/brand/brand.component';
-import { UserComponent } from './components/user/user.component';
+import { UserComponent } from './components/admin-operations/user/user.component';
 import { NaviComponent } from './components/navi/navi.component';
 import { RentalComponent } from './components/rental/rental.component';
 import { ColorComponent } from './components/color/color.component';
@@ -34,6 +34,8 @@ import { BrandsColorsComponent } from './components/admin-operations/brands-colo
 import { RentalCardComponent } from './components/rental-card/rental-card.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { UsersComponent } from './components/admin-operations/users/users.component';
+import { UserDetailsComponent } from './components/admin-operations/user-details/user-details.component';
 
 
 
@@ -66,7 +68,9 @@ export function tokenGetter(){
     BrandsColorsComponent,
     RentalCardComponent,
     FooterComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    UsersComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
