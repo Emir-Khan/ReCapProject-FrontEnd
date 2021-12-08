@@ -42,6 +42,7 @@ export class PaymentComponent implements OnInit {
     const script = this.renderer.createElement('script');
     script.src = 'assets/dist/js/payment.js';
     script.id = 'paymentScript'
+    script.name = Math.floor( Math.random() * 1000 ) + 1
     script.onload = () => {
       console.log('script loaded');
 

@@ -50,9 +50,7 @@ export class NaviComponent implements OnInit {
   }
 
   isUserAdmin() {
-    var role = this.jwtHelper.decodeToken(localStorage.getItem('token'))[
-      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-    ];
+    var role= this.authService.getClaims()
     console.log(role)
     // If role is an array
     if (typeof role == "object") {

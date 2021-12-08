@@ -1,4 +1,6 @@
-
+li a{
+  text-decoration: none;
+}
 
 ::ng-deep #card-image {
   width: 420px !important;

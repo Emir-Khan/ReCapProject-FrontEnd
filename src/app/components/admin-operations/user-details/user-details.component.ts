@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Rental } from 'src/app/models/rental';
 import { User } from 'src/app/models/user';
+import { UserForUpdateDto } from 'src/app/models/userForUpdateDto';
+import { AuthService } from 'src/app/services/auth.service';
 import { RentalService } from 'src/app/services/rental.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,34 +15,111 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
-  user:User
-  userId:number
-  rentals:Rental[]
+  user: User
+  userId: number
+  rentals: Rental[]
+  roles: any
+  isArray: boolean = false
+  dataLoaded: boolean = false
+  hasRental: boolean = false
+  updateUserForm: FormGroup
+  userForUpdateDto: UserForUpdateDto
+  userTag:string = "User"
+
+  tagClass:string ="text-muted text-center"
 
   constructor(
-    private rentalService:RentalService,
-    private userService:UserService,
-    private activatedRoute:ActivatedRoute
+    private rentalService: RentalService,
+    private userService: UserService,
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      this.userId = params['userId']
+    this.activatedRoute.params.subscribe(params => {
+      this.userId = parseInt(params['userId'])
       this.getUserById()
       this.getRentalsByUserId()
+      this.getUserClaims()
+    })
+  }
+
+  createUpdateUserForm() {
+    this.updateUserForm = this.formBuilder.group({
+      firstName: [this.user.firstName],
+      lastName: [this.user.lastName],
+      email: [this.user.email],
+      currentPassword: ["",Validators.required],
+      newPassword: [""]
     })
   }
 
   getRentalsByUserId() {
     this.rentalService.getRentalByUserId(this.userId).subscribe(response => {
       this.rentals = response.data
+      this.createUpdateUserForm()
+      this.dataLoaded = true
+      this.hasRental = true
+    }, responseErr => {
+      this.toastrService.info("Kullanıcı Henüz Araç Kiralamadı", "System")
+      this.dataLoaded = true
+      this.createUpdateUserForm()
+
     })
   }
 
-  getUserById(){
-    this.userService.getUserById(this.userId).subscribe(response=>{
-      this.user=response.data
+  getUserById() {
+    this.userService.getUserById(this.userId).subscribe(response => {
+      this.user = response.data
+      console.log(this.user)
     })
   }
 
+  getUserClaims() {
+    this.userService.getUserClaims(this.user).subscribe(response=>{
+      this.roles = response
+      console.log(this.roles)
+    })
+    
+    if (typeof this.roles == 'object') {
+      this.isArray = true
+      if(this.roles.includes("admin"))this.userTag = "Admin";this.tagClass="text-center text-bold text-danger"
+      
+    }
+    console.log(this.isArray)
+  }
+
+  change() {
+    var containerElement = document.getElementById("currentPasswordDiv")
+    containerElement.style.display = "flex"
+  }
+
+  cancel() {
+
+    var containerElement = document.getElementById("currentPasswordDiv")
+    containerElement.style.display = "none"
+
+  }
+
+  update() {
+    console.log(this.updateUserForm.value)
+    if (this.updateUserForm.valid) {
+      let updateModel = Object.assign({}, this.updateUserForm.value)
+      updateModel.id = this.user.id
+      console.log(updateModel)
+      this.userService.updateUser(updateModel).subscribe(response => {
+        this.toastrService.success(response.message, "Success")
+        this.userService.getUserById(this.userId).subscribe(response => {
+          this.user = response.data
+        })
+      },responseErr=>{
+        this.toastrService.error(responseErr.error.message,"Hata")
+      })
+    } else {
+      this.toastrService.error("Form Is Missing", "Error")
+    }
+
+  }
 }

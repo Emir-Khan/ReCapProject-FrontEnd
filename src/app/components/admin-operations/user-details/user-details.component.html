@@ -203,7 +203,7 @@
 
                             <!-- Profile Image -->
                             <div class="card card-primary card-outline">
-                                <div class="card-body box-profile">
+                                <div class="card-body box-profile" *ngIf="dataLoaded">
                                     <div class="text-center">
                                         <img class="profile-user-img img-fluid img-circle"
                                             src="assets/img/car-logo-default.jpg" alt="User profile picture">
@@ -212,21 +212,21 @@
                                     <h3 class="profile-username text-center">{{user.firstName |titlecase}}
                                         {{user.lastName |titlecase}}</h3>
 
-                                    <p class="text-muted text-center">Software Engineer</p>
+                                    <p [class]="tagClass">{{userTag}}</p>
 
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
-                                            <b>How many cars rented</b> <a class="float-right">{{rentals.length}}</a>
+                                            <b>How many cars rented</b> <a class="float-right" *ngIf="hasRental">{{rentals.length}}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Following</b> <a class="float-right">543</a>
+                                            <b>User ID</b> <a class="float-right">{{user.id}}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Friends</b> <a class="float-right">13,287</a>
+                                            <b>Roles</b> <a class="float-right"><span *ngIf="!isArray">{{roles}}</span><ng-container *ngIf="isArray"><span *ngFor="let role of roles">{{role}} </span></ng-container></a>
                                         </li>
                                     </ul>
 
-                                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                    <a href="#" class="btn btn-danger btn-block"><b>Delete User</b></a>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -281,7 +281,7 @@
                                     <ul class="nav nav-pills">
                                         <li class="nav-item"><a class="nav-link active" href="#activity"
                                                 data-toggle="tab">Activity</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#rented-cars"
+                                        <li *ngIf="hasRental" class="nav-item"><a class="nav-link" href="#rented-cars"
                                                 data-toggle="tab">Rented Cars</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#settings"
                                                 data-toggle="tab">Settings</a></li>
@@ -420,7 +420,7 @@
                                             <!-- /.post -->
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="rented-cars">
+                                        <div class="tab-pane" id="rented-cars" *ngIf="hasRental">
                                             <!-- The Rented Cars -->
                                             <app-rental-card [rental]="rental" *ngFor="let rental of rentals">
                                             </app-rental-card>
@@ -429,12 +429,20 @@
                                         <!-- /.tab-pane -->
 
                                         <div class="tab-pane" id="settings">
-                                            <form class="form-horizontal">
+                                            <form *ngIf="dataLoaded" class="form-horizontal" [formGroup]="updateUserForm">
                                                 <div class="form-group row">
-                                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                                    <label for="inputFirstName" class="col-sm-2 col-form-label">First Name</label>
                                                     <div class="col-sm-10">
-                                                        <input type="email" class="form-control" id="inputName"
-                                                            placeholder="Name">
+                                                        <input type="email" class="form-control" id="inputFirstName"
+                                                            placeholder="First Name" formControlName="firstName">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <label for="inputLastName" class="col-sm-2 col-form-label">Last Name</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="inputLastName"
+                                                            placeholder="Last Name" formControlName="lastName">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -442,45 +450,33 @@
                                                         class="col-sm-2 col-form-label">Email</label>
                                                     <div class="col-sm-10">
                                                         <input type="email" class="form-control" id="inputEmail"
-                                                            placeholder="Email">
+                                                            placeholder="Email" formControlName="email">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                                                    <label for="inputCurrentPassword"
+                                                        class="col-sm-2 col-form-label">Password</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="inputName2"
-                                                            placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputExperience"
-                                                        class="col-sm-2 col-form-label">Experience</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control" id="inputExperience"
-                                                            placeholder="Experience"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputSkills"
-                                                        class="col-sm-2 col-form-label">Skills</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="inputSkills"
-                                                            placeholder="Skills">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="offset-sm-2 col-sm-10">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox"> I agree to the <a href="#">terms
-                                                                    and conditions</a>
-                                                            </label>
+                                                        <div class="input-group">
+                                                            <input type="text" id="inputCurrentPassword" class="form-control" placeholder="Current Password" aria-label="Recipient's username" aria-describedby="button-addon2" formControlName="currentPassword">
+                                                            <button class="btn btn-outline-primary" (click)="change()" type="button" id="current-password-btn">Change</button>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="form-group row" id="currentPasswordDiv" style="display: none;">
+                                                    <label for="inputOldPassword"
+                                                    class="col-sm-2 col-form-label">New Password</label>
+                                                    <div class="col-sm-10" id="New Password">
+                                                      <div class="input-group">
+                                                        <input type="text" id="inputOldPassword" formControlName="newPassword" class="form-control" placeholder="New Password" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                        <button class="btn btn-outline-danger" (click)="cancel()" type="button" id="new-password-btn">Cancel</button>
+                                                      </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group row">
                                                     <div class="offset-sm-2 col-sm-10">
-                                                        <button type="submit" class="btn btn-danger">Submit</button>
+                                                        <button type="submit" class="btn btn-danger" (click)="update()">Submit</button>
                                                     </div>
                                                 </div>
                                             </form>

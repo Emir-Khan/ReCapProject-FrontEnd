@@ -61,4 +61,10 @@ export class AuthService {
       return false
     }
   }
+
+  getClaims():any{
+    return this.jwtHelper.decodeToken(localStorage.getItem('token'))[
+      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+    ];
+  }
 }

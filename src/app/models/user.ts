@@ -5,5 +5,4 @@ export interface User{
     email:string,
     status:boolean
     password:string
-    oldEmail:string
 }
