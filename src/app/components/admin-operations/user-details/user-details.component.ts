@@ -24,9 +24,9 @@ export class UserDetailsComponent implements OnInit {
   hasRental: boolean = false
   updateUserForm: FormGroup
   userForUpdateDto: UserForUpdateDto
-  userTag:string = "User"
+  userTag: string = "User"
 
-  tagClass:string ="text-muted text-center"
+  tagClass: string = "text-muted text-center"
 
   constructor(
     private rentalService: RentalService,
@@ -35,7 +35,7 @@ export class UserDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
     private formBuilder: FormBuilder,
-    private router:Router
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class UserDetailsComponent implements OnInit {
       firstName: [this.user.firstName],
       lastName: [this.user.lastName],
       email: [this.user.email],
-      currentPassword: ["",Validators.required],
+      currentPassword: ["", Validators.required],
       newPassword: [""]
     })
   }
@@ -78,24 +78,27 @@ export class UserDetailsComponent implements OnInit {
   }
 
   getUserClaims() {
-    this.userService.getUserClaims(this.user).subscribe(response=>{
-      this.roles= response
+    this.userService.getUserClaims(this.user).subscribe(response => {
+      this.roles = response
       console.log(this.roles)
       if (typeof this.roles == 'object') {
 
-        console.log("in")
         for (let i = 0; i < this.roles.length; i++) {
           this.isArray = true
-          if (this.roles[i].name =="admin") {
-            this.userTag = "Admin";this.tagClass="text-center text-bold text-danger"
+          if (this.roles[i].name == "admin") {
+            this.userTag = "Admin"; this.tagClass = "text-center text-bold text-danger"
+            console.log(this.userTag)
+          } else if ((this.roles[i].name == "car.add" || this.roles[i].name == "car.delete" || this.roles[i].name == "user.delete")
+           && (this.userTag != "Admin")) {
+            this.userTag = "Moderator"; this.tagClass = "text-center text-bold text-warning"
           }
         }
       }
       console.log(this.isArray)
     })
-    
-    
-    
+
+
+
   }
 
   change() {
@@ -118,21 +121,22 @@ export class UserDetailsComponent implements OnInit {
         this.toastrService.success(response.message, "Success")
         this.userService.getUserById(this.userId).subscribe(response => {
           this.user = response.data
+          this.getUserClaims()
         })
-      },responseErr=>{
-        this.toastrService.error(responseErr.error.message,"Hata")
+      }, responseErr => {
+        this.toastrService.error(responseErr.error.message, "Hata")
       })
     } else {
       this.toastrService.error("Form Is Missing", "Error")
     }
   }
 
-  deleteUser(){
-    this.userService.deleteUser(this.user).subscribe(response=>{
-      this.router.navigate(["/admin/users/"]).then(()=>{
-        this.toastrService.info(response.message,"System")
+  deleteUser() {
+    this.userService.deleteUser(this.user).subscribe(response => {
+      this.router.navigate(["/admin/users/"]).then(() => {
+        this.toastrService.info(response.message, "System")
       })
-    },responseErr=>{this.toastrService.error(responseErr.error.message,"Hata")})
+    }, responseErr => { this.toastrService.error(responseErr.error.message, "Hata") })
   }
 
 }
