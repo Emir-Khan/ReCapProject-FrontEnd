@@ -5,8 +5,7 @@ import {FormsModule,ReactiveFormsModule} from "@angular/forms"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {JwtModule} from "@auth0/angular-jwt"
 import { CommonModule } from '@angular/common';
-import { SwiperModule } from "swiper/angular";
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -83,7 +82,7 @@ export function tokenGetter(){
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    SwiperModule,
+    NgxPaginationModule,
     ToastrModule.forRoot({positionClass:"toast-bottom-right"}),
     JwtModule.forRoot({
       config:{
