@@ -5,6 +5,8 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import {FormGroup,FormBuilder, Validators} from "@angular/forms"
+import { Rental } from 'src/app/models/rental';
+import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
   selector: 'app-account',
@@ -12,17 +14,18 @@ import {FormGroup,FormBuilder, Validators} from "@angular/forms"
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-
+  updateUserForm: FormGroup
   user:User
-  userAddForm:FormGroup
-  dataLoaded:boolean = false
+  dataLoaded: boolean = false
+  hasRental: boolean = false
+  rentals: Rental[]
 
   constructor(
     private authService:AuthService,
     private userService:UserService,
     private toastrService:ToastrService,
     private formBuilder:FormBuilder,
-    private router:Router
+    private rentalService:RentalService
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +36,8 @@ export class AccountComponent implements OnInit {
     var userId= this.authService.getUserIdByJwt()
     this.userService.getUserById(userId).subscribe(response=>{
       this.user=response.data
-      this.createUserAddForm();
+      this.createUserUpdateForm();
+      this.getRentalsByUserId()
     }) 
   }
 
@@ -42,21 +46,30 @@ export class AccountComponent implements OnInit {
       element[0].setAttribute("disabled","")
   }
 
-  createUserAddForm(){
-     this.userAddForm = this.formBuilder.group({ 
-      userId:[this.user.id,Validators.required],
+  getRentalsByUserId() {
+    this.rentalService.getRentalByUserId(this.user.id).subscribe(response => {
+      this.rentals = response.data
+      this.hasRental = true
+      this.dataLoaded = true
+    }, responseErr => {
+      this.dataLoaded = true
+      this.toastrService.info("Kullanıcı Henüz Araç Kiralamadı", "System")
+    })
+  }
+
+  createUserUpdateForm(){
+     this.updateUserForm = this.formBuilder.group({ 
       firstName:[this.user.firstName,Validators.required],
       lastName:[this.user.lastName,Validators.required],
       email:[this.user.email,Validators.required],
-      oldEmail:[this.user.email,Validators.required],
-      password:[""]
+      currentPassword:[""],
+      newPassword:[""]
     })
-    this.dataLoaded=true
   }
   
   save(){
-    if(this.userAddForm.valid){
-      let userModule = Object.assign({},this.userAddForm.value)
+    if(this.updateUserForm.valid){
+      let userModule = Object.assign({},this.updateUserForm.value)
       this.authService.updateUser(userModule).subscribe(response=>{
         this.toastrService.success("Bilgiler Güncellendi","Bilgi")
       },responseError=>{
