@@ -9,6 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UsersComponent implements OnInit {
   users:User[]
+  page:number = 1
+  dataLoaded:boolean = false
   
   constructor(
     private userService:UserService
@@ -21,8 +23,11 @@ export class UsersComponent implements OnInit {
   getUsers(){
     this.userService.getUsers().subscribe(response=>{
       this.users=response.data
+      this.dataLoaded=true
     })
   }
 
-  
+  handlePageChange(event: number) {
+    this.page = event;
+  }
 }
