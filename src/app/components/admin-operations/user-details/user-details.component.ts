@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Rental } from 'src/app/models/rental';
 import { User } from 'src/app/models/user';
@@ -34,7 +34,8 @@ export class UserDetailsComponent implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +43,6 @@ export class UserDetailsComponent implements OnInit {
       this.userId = parseInt(params['userId'])
       this.getUserById()
       this.getRentalsByUserId()
-      this.getUserClaims()
     })
   }
 
@@ -59,13 +59,12 @@ export class UserDetailsComponent implements OnInit {
   getRentalsByUserId() {
     this.rentalService.getRentalByUserId(this.userId).subscribe(response => {
       this.rentals = response.data
-      this.createUpdateUserForm()
       this.dataLoaded = true
       this.hasRental = true
     }, responseErr => {
       this.toastrService.info("Kullanıcı Henüz Araç Kiralamadı", "System")
       this.dataLoaded = true
-      this.createUpdateUserForm()
+
 
     })
   }
@@ -73,22 +72,30 @@ export class UserDetailsComponent implements OnInit {
   getUserById() {
     this.userService.getUserById(this.userId).subscribe(response => {
       this.user = response.data
-      console.log(this.user)
+      this.getUserClaims()
+      this.createUpdateUserForm()
     })
   }
 
   getUserClaims() {
     this.userService.getUserClaims(this.user).subscribe(response=>{
-      this.roles = response
+      this.roles= response
       console.log(this.roles)
+      if (typeof this.roles == 'object') {
+
+        console.log("in")
+        for (let i = 0; i < this.roles.length; i++) {
+          this.isArray = true
+          if (this.roles[i].name =="admin") {
+            this.userTag = "Admin";this.tagClass="text-center text-bold text-danger"
+          }
+        }
+      }
+      console.log(this.isArray)
     })
     
-    if (typeof this.roles == 'object') {
-      this.isArray = true
-      if(this.roles.includes("admin"))this.userTag = "Admin";this.tagClass="text-center text-bold text-danger"
-      
-    }
-    console.log(this.isArray)
+    
+    
   }
 
   change() {
@@ -97,10 +104,8 @@ export class UserDetailsComponent implements OnInit {
   }
 
   cancel() {
-
     var containerElement = document.getElementById("currentPasswordDiv")
     containerElement.style.display = "none"
-
   }
 
   update() {
@@ -120,6 +125,14 @@ export class UserDetailsComponent implements OnInit {
     } else {
       this.toastrService.error("Form Is Missing", "Error")
     }
-
   }
+
+  deleteUser(){
+    this.userService.deleteUser(this.user).subscribe(response=>{
+      this.router.navigate(["/admin/users/"]).then(()=>{
+        this.toastrService.info(response.message,"System")
+      })
+    },responseErr=>{this.toastrService.error(responseErr.error.message,"Hata")})
+  }
+
 }

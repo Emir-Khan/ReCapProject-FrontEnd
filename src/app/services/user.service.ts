@@ -23,11 +23,16 @@ export class UserService {
   getUsers(): Observable<ListResponseModel<User>> {
     return this.httpClient.get<ListResponseModel<User>>(this.apiUrl+"getall");
   }
-  getUserClaims(user:User):Observable<Array<OperationClaim>>{
-    return this.httpClient.post<Array<OperationClaim>>(this.apiUrl+"getuserclaims",user)
+
+  getUserClaims(user:User):Observable<ListResponseModel<OperationClaim>>{
+    return this.httpClient.post<ListResponseModel<OperationClaim>>(this.apiUrl+"getuserclaims",user)
   }
 
   updateUser(userForUpdateDto:UserForUpdateDto):Observable<ResponseModel>{
     return this.httpClient.post<ResponseModel>(this.apiUrl+"updateuserdetails",userForUpdateDto)
+  }
+
+  deleteUser(user:User):Observable<ResponseModel>{
+    return this.httpClient.post<ResponseModel>(this.apiUrl+"delete",user)
   }
 }

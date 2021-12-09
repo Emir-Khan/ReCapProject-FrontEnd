@@ -175,6 +175,7 @@
             </div>
             <!-- /.sidebar -->
         </aside>
+        <!-- Button trigger modal -->
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -188,7 +189,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="/admin/users/">Users</a></li>
                                 <li class="breadcrumb-item active">User Profile</li>
                             </ol>
                         </div>
@@ -216,17 +217,45 @@
 
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
-                                            <b>How many cars rented</b> <a class="float-right" *ngIf="hasRental">{{rentals.length}}</a>
+                                            <b>Cars rented</b> <a class="float-right" *ngIf="hasRental">{{rentals.length}}</a>
                                         </li>
                                         <li class="list-group-item">
                                             <b>User ID</b> <a class="float-right">{{user.id}}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Roles</b> <a class="float-right"><span *ngIf="!isArray">{{roles}}</span><ng-container *ngIf="isArray"><span *ngFor="let role of roles">{{role}} </span></ng-container></a>
+                                            <b>Roles</b> <a class="float-right">
+                                                <span *ngIf="!isArray">User</span>
+                                                <ng-container *ngIf="isArray"><span *ngFor="let role of roles">{{role.name}} </span></ng-container>
+                                            </a>
                                         </li>
-                                    </ul>
-
-                                    <a href="#" class="btn btn-danger btn-block"><b>Delete User</b></a>
+                                    </ul>                                 
+                                    <!-- Button trigger modal -->
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-danger">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content bg-danger">
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Danger Modal</h4>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <p>One fine body…</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                              <button type="button" class="btn btn-outline-light" (click)="deleteUser()">Save changes</button>
+                                            </div>
+                                          </div>
+                                          <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                      </div>
+                                      <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-danger">
+                                        <b>Delete User</b>
+                                      </button>
                                 </div>
                                 <!-- /.card-body -->
                             </div>

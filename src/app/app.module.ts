@@ -4,6 +4,8 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http"
 import {FormsModule,ReactiveFormsModule} from "@angular/forms"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {JwtModule} from "@auth0/angular-jwt"
+import { CommonModule } from '@angular/common';
+import { SwiperModule } from "swiper/angular";
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -39,6 +41,7 @@ import { UserDetailsComponent } from './components/admin-operations/user-details
 
 
 
+
 export function tokenGetter(){
   return localStorage.getItem("token")
 }
@@ -70,7 +73,7 @@ export function tokenGetter(){
     FooterComponent,
     AdminPanelComponent,
     UsersComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +82,8 @@ export function tokenGetter(){
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
+    SwiperModule,
     ToastrModule.forRoot({positionClass:"toast-bottom-right"}),
     JwtModule.forRoot({
       config:{
