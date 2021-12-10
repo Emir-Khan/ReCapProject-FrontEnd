@@ -1,14 +1,18 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-.product{
-    width: 380px;
-}
-
-.description{
-    margin-left:auto
+.product {
+  width: 380px;
 }
 
-.date-card{
-    margin-left: auto;
+.description {
+  margin-left: auto;
+}
+
+.date-card {
+  margin-left: auto;
+}
+.mat-typography h5 {
+  all: initial;
+  all: unset;
 }

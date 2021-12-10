@@ -73,10 +73,18 @@ export class AccountComponent implements OnInit {
       this.authService.updateUser(userModule).subscribe(response=>{
         this.toastrService.success("Bilgiler Güncellendi","Bilgi")
       },responseError=>{
-        
+        this.toastrService.error(responseError.error.message,"System")
       })
     }
-    
   }
 
+  change() {
+    var containerElement = document.getElementById("currentPasswordDiv")
+    containerElement.style.display = "flex"
+  }
+
+  cancel() {
+    var containerElement = document.getElementById("currentPasswordDiv")
+    containerElement.style.display = "none"
+  }
 }

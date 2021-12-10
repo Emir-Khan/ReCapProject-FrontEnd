@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http"
-import {FormsModule,ReactiveFormsModule} from "@angular/forms"
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
-import {JwtModule} from "@auth0/angular-jwt"
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http"
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { JwtModule } from "@auth0/angular-jwt"
 import { CommonModule } from '@angular/common';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +22,7 @@ import { RentalComponent } from './components/rental/rental.component';
 import { ColorComponent } from './components/color/color.component';
 import { FilterPipePipe } from './pipes/filter-pipe.pipe';
 
-import {ToastrModule} from "ngx-toastr";
+import { ToastrModule } from "ngx-toastr";
 import { CarFilterPipe } from './pipes/car-filter.pipe';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { CarImagesComponent } from './components/car-images/car-images.component';
@@ -37,13 +42,16 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { UsersComponent } from './components/admin-operations/users/users.component';
 import { UserDetailsComponent } from './components/admin-operations/user-details/user-details.component';
+import { MatButtonModule } from '@angular/material/button';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 
 
-
-export function tokenGetter(){
+export function tokenGetter() {
   return localStorage.getItem("token")
 }
+
+
 
 @NgModule({
   declarations: [
@@ -83,16 +91,26 @@ export function tokenGetter(){
     FormsModule,
     CommonModule,
     NgxPaginationModule,
-    ToastrModule.forRoot({positionClass:"toast-bottom-right"}),
+
+    MatDatepickerModule,
+    MatInputModule,
+    MatButtonModule,
+
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
+    
+
+    ToastrModule.forRoot({ positionClass: "toast-bottom-right" }),
     JwtModule.forRoot({
-      config:{
-        tokenGetter:tokenGetter,
-        allowedDomains:["localhost:4200","localhost:44358"]
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:4200", "localhost:44358"]
       }
     })
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

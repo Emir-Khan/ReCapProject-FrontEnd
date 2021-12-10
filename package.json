@@ -1,9 +1,6 @@
 {
   "name": "car-rental",
   "version": "0.0.0",
-  "tags": [
-    "swiper"
-  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,11 +11,15 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-components/datetime-picker": "^7.0.1",
+    "@angular-material-components/moment-adapter": "^7.0.0",
     "@angular/animations": "^12.2.14",
+    "@angular/cdk": "^12.2.13",
     "@angular/common": "~12.2.14",
     "@angular/compiler": "~12.2.14",
     "@angular/core": "~12.2.14",
     "@angular/forms": "~12.2.14",
+    "@angular/material": "^13.1.0",
     "@angular/platform-browser": "~12.2.14",
     "@angular/platform-browser-dynamic": "~12.2.14",
     "@angular/router": "~12.2.14",
@@ -28,12 +29,13 @@
     "bootstrap": "^5.0.0-beta3",
     "imask": "^6.2.2",
     "jquery": "^3.6.0",
+    "jquery-datepicker": "^1.12.3",
     "ngx-pagination": "^5.1.1",
     "ngx-swiper-wrapper": "^8.0.2",
     "ngx-toastr": "^13.2.1",
     "range": "0.0.3",
     "rxjs": "~6.6.0",
-    "tslib": "^2.0.0",
+    "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -41,7 +43,7 @@
     "@angular/cli": "^12.2.14",
     "@angular/compiler-cli": "~12.2.14",
     "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.11.1",
+    "@types/jquery": "^3.5.10",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
