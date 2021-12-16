@@ -9,13 +9,13 @@
 
       <div class="col-md-10">
         <div class="mb-3">
-          <label for="filterText" class="form-label text-muted">Araba Ara</label>
+          <label for="filterText" class="form-label text-muted">Search Car</label>
           <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Araba arayınız">
         </div>
         <div *ngIf="filterText" class="alert alert-success">
-          {{filterText}} aradınız.
+          {{filterText}} searched.
         </div>
-        <p class="text-bold mt-1">Arabalar</p>
+        <p class="text-bold mt-1">Cars</p>
         <app-spinner *ngIf="!dataLoaded"></app-spinner>
         <div class="row g-2" *ngIf="dataLoaded">
           <app-car-images class="col-lg-4 col-md-6 col-sm-6" [car]="car" *ngFor="let car of cars | carFilter:filterText"></app-car-images>
