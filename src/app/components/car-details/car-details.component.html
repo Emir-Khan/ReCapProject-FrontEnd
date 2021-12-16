@@ -29,12 +29,40 @@
     </ul>
 
     <div class="card w-50 h-25 date-card" *ngFor="let car of cars">
-      <div class="card-body">
-        <form [formGroup]="rentAddForm">
+      <div class="card-body" [formGroup]="rentAddForm">
+
+        <mat-form-field class="w-75" id="rentDatePicker" appearance="fill">
+          <mat-label>Rent Date</mat-label>
+          <input matInput [matDatepicker]="picker1"  [matDatepickerFilter]="myFilter" formControlName="rentDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <form id="rentTimePicker" [formGroup]="formGroup">
+          <ngx-mat-timepicker formControlName="date2"></ngx-mat-timepicker>
+        </form>
+
+
+
+
+
+        <mat-form-field class="w-75 mt-5" appearance="fill">
+          <mat-label>Return Date</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="returnDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <form id="returnTimePicker" [formGroup]="formGroup">
+          <ngx-mat-timepicker formControlName="date1"></ngx-mat-timepicker>
+        </form>
+
+
+
+        <!-- <form [formGroup]="rentAddForm">
           <div class="form-group row">
             <label for="example-date-input" class="col-3 col-form-label">Başlangıç</label>
             <div class="col-9">
-              <input class="form-control" type="datetime-local" formControlName="rentDate" min="2021-04-10" max="2021-12-31" value="2020-04-11"
+              <input class="form-control" type="date" formControlName="rentDate" min="2021-04-10" max="2021-12-31" value="2020-04-11"
                 id="rent-date-input">
             </div>
           </div>
@@ -48,7 +76,11 @@
           <button class="btn btn-primary w-100 mt-3" (click)="rentalAdd()">
             Kirala
           </button>
-        </form>
+          
+        </form> -->
+        <button class="btn btn-primary w-100 mt-3" (click)="rentalAdd()">
+          Kirala
+        </button>
       </div>
     </div>
   </div>

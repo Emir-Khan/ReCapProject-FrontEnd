@@ -16,3 +16,16 @@
   all: initial;
   all: unset;
 }
+.card-body{
+  position: relative;
+}
+#rentTimePicker{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#returnTimePicker{
+  position: absolute;
+  right: 0;
+  top: 108px;
+}

@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Car } from 'src/app/models/car';
 import { CarImage } from 'src/app/models/carImage';
 import { CarImageService } from 'src/app/services/car-image.service';
 import { CarService } from 'src/app/services/car.service';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms"
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms"
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { RentalService } from 'src/app/services/rental.service';
+import { DateFilterFn, MatDatepicker } from '@angular/material/datepicker';
+import { Rental } from 'src/app/models/rental';
+
 
 @Component({
   selector: 'app-car-details',
@@ -15,14 +18,38 @@ import { RentalService } from 'src/app/services/rental.service';
   styleUrls: ['./car-details.component.css'],
 })
 export class CarDetailsComponent implements OnInit {
-
   cars: Car[];
+  rentals: Rental[]
   carImage: CarImage;
   carImageUrl: string;
   rentAddForm: FormGroup
   strUserId: string
   userId: number
   carID: number
+  currentYear: number;
+  index:number =0
+  dates:Date[] =[]
+  myFilter = (d: Date|null): boolean => {
+    const date =d.getDate();
+    console.log(this.dates)
+    let sortedDates= this.dates.sort((a:Date,b:Date)=> a.getTime()-b.getTime())
+    console.log(sortedDates)
+      
+      if (2021 == new Date(sortedDates[this.index]).getFullYear()) {
+
+        console.log(date)
+        console.log(sortedDates[this.index].getDate())
+        console.log(this.index)
+        var responsedDate=sortedDates[this.index].getDate()==date? false:true;
+        sortedDates[this.index].getDate()==date? false:true;
+        if(sortedDates[this.index].getDate()==date) this.index++
+        return responsedDate
+      }  
+
+    return true
+  }
+  returnDateForm: FormGroup
+  timeGroup: FormGroup
 
   constructor(
     private toastrService: ToastrService,
@@ -41,11 +68,23 @@ export class CarDetailsComponent implements OnInit {
         this.getCarById(params["carId"]);
         this.getCarImage(params["carId"])
         this.createRentalAddFrom(params["carId"])
-
-        console.log(this.cars)
+        this.getRentals()
       }
     })
+  }
 
+  public formGroup = new FormGroup({
+    date2: new FormControl(null, [Validators.required]),
+    date1: new FormControl(null, [Validators.required])
+  })
+  createRentalAddFrom(strcarId: string) {
+    this.carID = +strcarId
+    this.rentAddForm = this.formBuilder.group({
+      carId: [this.carID, Validators.required],
+      userId: [this.userId, Validators.required],
+      rentDate: ["", Validators.required],
+      returnDate: ["", Validators.required]
+    })
   }
 
   getCarImage(carId: number) {
@@ -69,21 +108,47 @@ export class CarDetailsComponent implements OnInit {
     })
   }
 
-  createRentalAddFrom(strcarId: string) {
-    this.carID = +strcarId
-    this.rentAddForm = this.formBuilder.group({
-      carId: [this.carID, Validators.required],
-      userId: [this.userId, Validators.required],
-      rentDate: ["", Validators.required],
-      returnDate: ["", Validators.required]
+  getRentals(){
+    this.rentalService.getRentals().subscribe(response=>{
+      this.rentals= response.data
+      this.findFilterDates()
     })
+  }
+
+  findFilterDates(){
+    console.log(this.rentals)
+    for (let i = 0; i < this.rentals.length; i++) {
+      this.rentals[i].rentDate = new Date(new Date(new Date(this.rentals[i].rentDate).setMinutes(0)).setHours(0))
+      this.rentals[i].returnDate = new Date(new Date(new Date(this.rentals[i].returnDate).setMinutes(0)).setHours(0))
+      let rentDate = new Date(this.rentals[i].rentDate)
+      let returnDate = new Date(this.rentals[i].returnDate)
+      this.dates.push(this.rentals[i].returnDate) 
+      while (rentDate<returnDate) {
+        console.log("in")
+        this.dates.push(returnDate) 
+        returnDate = new Date(returnDate.setHours(-24))
+      }
+     
+    }
+    console.log(this.dates)
   }
 
   rentalAdd() {
     if (this.authService.isAuthenticated()) {
       if (this.rentAddForm.valid) {
+        var timeModule = Object.assign({}, this.formGroup.value)
+
+        var time2 = timeModule.date2._d
+        var time1 = timeModule.date1._d
+
+        this.rentAddForm.value.rentDate = new Date(this.rentAddForm.value.rentDate.setHours(time2.getHours()))
+        this.rentAddForm.value.rentDate = new Date(this.rentAddForm.value.rentDate.setMinutes(time2.getMinutes()))
+
+        this.rentAddForm.value.returnDate = new Date(this.rentAddForm.value.returnDate.setHours(time1.getHours()))
+        this.rentAddForm.value.returnDate = new Date(this.rentAddForm.value.returnDate.setMinutes(time1.getMinutes()))
         var rentModule = Object.assign({}, this.rentAddForm.value)
-        console.log(this.rentAddForm.value)
+
+        console.log(rentModule)
         this.rentalService.isRentable(rentModule).subscribe(response => {
           this.toastrService.info("Ödeme bilgilerinizi giriniz", "Sistem")
           this.router.navigate(["cars/" + this.carID + "/payment"])
