@@ -7,10 +7,7 @@ import { JwtModule } from "@auth0/angular-jwt"
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,7 +40,10 @@ import { AdminPanelComponent } from './components/admin-panel/admin-panel.compon
 import { UsersComponent } from './components/admin-operations/users/users.component';
 import { UserDetailsComponent } from './components/admin-operations/user-details/user-details.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+
 
 
 
@@ -96,11 +96,14 @@ export function tokenGetter() {
     MatInputModule,
     MatButtonModule,
 
-    NgxMatTimepickerModule,
+    MatNativeDateModule,
     NgxMatDatetimePickerModule,
+    MatDatepickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
     NgxMatMomentModule,
     
-
+    
     ToastrModule.forRoot({ positionClass: "toast-bottom-right" }),
     JwtModule.forRoot({
       config: {
