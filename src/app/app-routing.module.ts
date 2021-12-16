@@ -41,7 +41,7 @@ const routes: Routes = [
   {path:"admin/users",component:UsersComponent, canActivate:[LoginGuard,AccessGuard]},
   {path:"admin/users/user-details/:userId",component:UserDetailsComponent, canActivate:[LoginGuard,AccessGuard]},
 
-  {path:"cars/:carId/payment",component:PaymentComponent},
+  {path:"cars/:carId/payment",component:PaymentComponent,canActivate:[LoginGuard]},
 
   {path:"login",component:LoginComponent},
   {path:"register",component:RegisterComponent}
