@@ -1,6 +1,6 @@
 <form>
     <div class="col filter-select">
-        <label for="colors">Renkler</label>
+        <label for="colors">Colors</label>
         <select name="colors" id="colors" class="form-select form-select-sm" [(ngModel)]="colorId">
             <option selected value="-1">All</option>
             <option *ngFor="let color of colors" [value]="color.colorId">
@@ -8,7 +8,7 @@
         </select>
     </div>
     <div class="col mb-3 filter-select">
-        <label for="brands">Markalar</label>
+        <label for="brands">Brands</label>
         <select name="brands" id="brands" class="form-select form-select-sm" [(ngModel)]="brandId">
             <option selected value="-1">All</option>
             <option *ngFor="let brand of brands" [value]="brand.brandId">
