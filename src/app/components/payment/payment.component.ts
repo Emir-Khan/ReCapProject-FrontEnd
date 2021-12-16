@@ -42,7 +42,7 @@ export class PaymentComponent implements OnInit {
     const script = this.renderer.createElement('script');
     script.src = 'assets/dist/js/payment.js';
     script.id = 'paymentScript'
-    script.name = Math.floor( Math.random() * 1000 ) + 1
+    script.name = Math.floor(Math.random() * 1000) + 1
     script.onload = () => {
       console.log('script loaded');
 
@@ -75,8 +75,9 @@ export class PaymentComponent implements OnInit {
             .then(() => {
               window.location.reload();
             });
-        },responseErr=>{
-          this.toastrService.error(responseErr.err,"Hata")
+            
+        }, responseErr => {
+          this.toastrService.error(responseErr.err, "Hata")
         })
       } else {
         this.toastrService.error("Son Kullanım Tarihi Geçersiz")
