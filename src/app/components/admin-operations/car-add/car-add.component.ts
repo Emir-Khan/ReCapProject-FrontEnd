@@ -21,6 +21,8 @@ export class CarAddComponent implements OnInit {
   deleteCarForm: FormGroup;
   addCarImageForm: FormGroup
   selectedFile: File
+  updateCarForm: FormGroup
+  carSelect: number = -1
 
   imageSrc: any = "../../../../assets/img/car-image-add-default.png"
 
@@ -30,6 +32,14 @@ export class CarAddComponent implements OnInit {
 
   firstBrand: Brand
 
+  carNameText: string 
+  modelYearText: number 
+  descriptionText: string
+  dailyPriceText: number
+  brandSelect: number
+  colorSelect: number
+  carIdText:number 
+
   constructor(
     private brandService: BrandService,
     private colorService: ColorService,
@@ -37,13 +47,14 @@ export class CarAddComponent implements OnInit {
     private carService: CarService,
     private toastService: ToastrService,
     private httpClient: HttpClient,
-    private carImageService:CarImageService
+    private carImageService: CarImageService
   ) { }
 
   ngOnInit(): void {
     this.createCarAddForm();
     this.createDeleteCarForm();
     this.createCarImageAddForm();
+
     this.getCars()
     this.getBrands()
     this.getColors()
@@ -58,6 +69,17 @@ export class CarAddComponent implements OnInit {
   createDeleteCarForm() {
     this.deleteCarForm = this.formBuilder.group({
       carId: ['', Validators.required]
+    })
+  }
+  createUpdateCarForm(){
+    this.updateCarForm= this.formBuilder.group({
+      carId:[this.carIdText, Validators.required],
+      brandId: [this.brandSelect, Validators.required],
+      colorId: [this.colorSelect, Validators.required],
+      carName: [this.carNameText, Validators.required],
+      modelYear: [this.modelYearText, Validators.required],
+      dailyPrice: [this.dailyPriceText, Validators.required],
+      description: [this.descriptionText, Validators.required]
     })
   }
 
@@ -117,6 +139,47 @@ export class CarAddComponent implements OnInit {
     });
   }
 
+  changeTexts() {
+    console.log(this.carSelect)
+    
+    let data = this.cars.find(i => i.carId == this.carSelect)
+   
+    this.carNameText = data.carName
+    this.modelYearText = data.modelYear
+    this.descriptionText = data.description
+    this.dailyPriceText = data.dailyPrice
+    this.brandSelect = data.brandId
+    this.colorSelect = data.colorId
+    this.carIdText = data.carId
+    console.log(this.carNameText +
+      this.modelYearText +
+      this.descriptionText+
+      this.dailyPriceText +"d "+
+      this.brandSelect +"b "+
+      this.colorSelect +"c "+
+      this.carIdText +" cid")
+      this.createUpdateCarForm()
+  }
+
+  updateCar(){
+    console.log(this.carNameText +
+      this.modelYearText +
+      this.descriptionText+
+      this.dailyPriceText +"d "+
+      this.brandSelect +"b "+
+      this.colorSelect +"c "+
+      this.carIdText +" cid")
+    console.log(this.updateCarForm.value)
+    if (this.updateCarForm.valid) {
+      let updateModule = Object.assign({},this.updateCarForm.value)
+      this.carService.updateCar(updateModule).subscribe(response=>{
+        this.toastService.success(response.message,"Başarılı")
+      })
+    }else{
+      this.toastService.error("Formunuz Ekisk","Hata")
+    }
+  }
+
   add() {
     console.log(this.carAddForm.value)
     if (this.carAddForm.valid) {
@@ -138,17 +201,17 @@ export class CarAddComponent implements OnInit {
   delete() {
     if (this.deleteCarForm.valid) {
       let deleteModule = Object.assign({}, this.deleteCarForm.value)
-      this.carImageService.getImagesByCarId(deleteModule.carId).subscribe(response=>{
-        this.carImageService.deleteImage(response.data[0]).subscribe(response=>{
-          this.toastService.info(response.message,"Sistem")
+      this.carImageService.getImagesByCarId(deleteModule.carId).subscribe(response => {
+        this.carImageService.deleteImage(response.data[0]).subscribe(response => {
+          this.toastService.info(response.message, "Sistem")
         })
       })
       this.carService.deleteCar(deleteModule).subscribe(response => {
         this.toastService.success(response.message, "İşlem Başarılı")
         this.getCars()
       })
-    }else{
-      this.toastService.error("Formunuz Eksik","Hata")
+    } else {
+      this.toastService.error("Formunuz Eksik", "Hata")
     }
   }
 }

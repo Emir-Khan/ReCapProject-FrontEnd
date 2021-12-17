@@ -160,7 +160,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="pages/UI/general.html" class="nav-link">
+                                    <a href="/admin/users" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Wiew Users</p>
                                     </a>
@@ -205,22 +205,22 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 style="display: block;" class="card-title">Araba Ekle</h5>
+                                    <h5 style="display: block;" class="card-title">Car Add</h5>
                                     <form [formGroup]="carAddForm">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="mb-3">
-                                                    <label for="carName">Araba Adı</label>
+                                                    <label for="carName">Car Name</label>
                                                     <div class="form-group">
                                                         <input type="text" id="carName" formControlName="carName"
-                                                            class="form-control" placeholder="Araba adı">
+                                                            class="form-control" placeholder="Car Name">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="modelYear">Model Year</label>
                                                     <div class="form-group">
                                                         <input type="number" id="modelYear" formControlName="modelYear"
-                                                            class="form-control" placeholder="Model Yılı">
+                                                            class="form-control" placeholder="Model Year">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
@@ -228,7 +228,7 @@
                                                     <div class="form-group">
                                                         <input type="text" id="description"
                                                             formControlName="description" class="form-control"
-                                                            placeholder="Açıklama">
+                                                            placeholder="Description">
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,14 +257,104 @@
                                                     <div class="form-group">
                                                         <input type="number" id="dailyPrice"
                                                             formControlName="dailyPrice" class="form-control"
-                                                            placeholder="Günlük Fiyatı">
+                                                            placeholder="Daily Price">
                                                     </div>
                                                 </div>
 
                                             </div>
-                                            <div><button class="btn btn-primary" (click)="add()">Ekle</button></div>
+                                            <div><button class="btn btn-primary" (click)="add()">Add</button></div>
                                         </div>
 
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="height: 430px;">
+                        <div class="row">
+                            <div class="col-md-4 car-data-add">
+                                <img src="assets/img/default-car-add.png" class="img-fluid" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 style="display: inline;" class="card-title">Car Update</h5>
+                                    <select (change)="changeTexts()" class="form-select float-right w-75"
+                                        aria-label="Default select example" [(ngModel)]="carSelect">
+                                        <option selected value="-1">Select a car</option>
+                                        <option *ngFor="let car of cars" [value]="car.carId">ID: {{car.carId}} | Name:
+                                            {{car.carName}}</option>
+                                    </select>
+                                    <form style="margin-top: 30px;" [formGroup]="updateCarForm">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label for="carName">Car Name</label>
+                                                    <div class="form-group">
+                                                        <input  type="text" [value]="carNameText" id="carName"
+                                                            class="form-control" formControlName="carName" placeholder="Car name">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="modelYear">Model Year</label>
+                                                    <div class="form-group">
+                                                        <input [value]="modelYearText" type="number" id="modelYear"
+                                                            class="form-control" formControlName="modelYear" placeholder="Model Year">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label  for="description">Description</label>
+                                                    <div class="form-group">
+                                                        <input [value]="descriptionText" type="text" id="description"
+                                                            class="form-control" formControlName="description" placeholder="Description">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mb-3" id="brandId">
+                                                    <label for="brandId">Brand ID</label>
+                                                    <select [value]="brandSelect" name="brandSelect" 
+                                                        class="form-select" aria-label="Default select example">
+                                                        <option value="{{brand.brandId}}" *ngFor="let brand of brands">
+                                                            {{brand.brandName}}
+                                                        </option>>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="colorId">Color ID</label>
+                                                    <select [value]="colorSelect" name="colorSelect" 
+                                                        class="form-select" aria-label="Default select example">
+                                                        <option value="{{color.colorId}}" *ngFor="let color of colors">
+                                                            {{color.colorName}}
+                                                        </option>>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <label for="dailyPrice">Daily Price</label>
+                                                            <div class="form-group">
+                                                                <input [value]="dailyPriceText" type="number"
+                                                                    id="dailyPrice" formControlName="dailyPrice" class="form-control"
+                                                                    placeholder="Daily Price">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="carIdentity">Car ID</label>
+                                                            <div class="form-group">
+                                                                <input [value]="carIdText" type="number"
+                                                                    id="carIdentity" class="form-control"
+                                                                    placeholder="Car ID" formControlName="carId">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div><button class="btn btn-warning" (click)="updateCar()">Update</button>
+                                            </div>
+                                        </div>
 
                                     </form>
                                 </div>
@@ -284,34 +374,34 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">Araba Resimi Ekle</h5>
+                                        <h5 class="card-title">Car Image Add</h5>
 
                                         <form [formGroup]="addCarImageForm">
                                             <div class="mb-3">
-                                                <label for="carIdForImage">Araba ID</label>
+                                                <label for="carIdForImage">Car ID</label>
                                                 <div class="form-group">
                                                     <input type="number" id="carIdForImage" formControlName="carId"
-                                                        class="form-control" placeholder="Araba ID">
+                                                        class="form-control" placeholder="Car ID">
                                                 </div>
                                             </div>
                                         </form>
 
-                                        <p class="card-text"><small class="text-muted">Sadece Araba ID ve Resim
-                                                gerekir</small> <button class="btn btn-primary" (click)="onUpload()"
-                                                style="float: right;">Ekle</button></p>
+                                        <p class="card-text"><small class="text-muted">Requires Only Car ID and Image
+                                                File</small> <button class="btn btn-primary" (click)="onUpload()"
+                                                style="float: right;">Add</button></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card car-delete border-danger mb-3 col">
-                            <div class="card-header">Araba Ve Resmini Sil</div>
+                            <div class="card-header">Delete Car and Picture</div>
                             <div class="card-body text-danger">
                                 <form [formGroup]="deleteCarForm">
                                     <div class="mb-3">
-                                        <label for="id">Araba ID</label>
+                                        <label for="id">Car ID</label>
                                         <div class="form-group">
                                             <input type="number" id="id" formControlName="carId" class="form-control"
-                                                placeholder="Araba ID">
+                                                placeholder="Car ID">
                                         </div>
                                     </div>
 
@@ -323,29 +413,29 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table table-striped text-center">
                         <thead>
-                            <th>Araba ID</th>
-                            <th>Marka ID</th>
-                            <th>Renk ID</th>
-                            <th>Araba Adı</th>
-                            <th>Marka Adı</th>
-                            <th>Renk Adı</th>
-                            <th>Model Yılı</th>
-                            <th>Günlük Bedeli</th>
-                            <th>Resimi Var Mı?</th>
+                            <th>Car ID</th>
+                            <th>Brand ID</th>
+                            <th>Color ID</th>
+                            <th>Car Name</th>
+                            <th>Brand Name</th>
+                            <th>Color Name</th>
+                            <th>Model Year</th>
+                            <th>Daily Price</th>
+                            <th>Has IMG?</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let car of cars">
                                 <td>{{car.carId}}</td>
                                 <td>{{car.brandId}}</td>
                                 <td>{{car.colorId}}</td>
-                                <td>{{car.carName}}</td>
-                                <td>{{car.brandName}}</td>
-                                <td>{{car.colorName}}</td>
+                                <td>{{car.carName | titlecase}}</td>
+                                <td>{{car.brandName | titlecase}}</td>
+                                <td>{{car.colorName | titlecase}}</td>
                                 <td>{{car.modelYear}}</td>
                                 <td>{{car.dailyPrice}}</td>
-                                <td>{{car.hasImage}}</td>
+                                <td>{{car.hasImage.toString() | titlecase}}</td>
                             </tr>
 
                         </tbody>
@@ -353,14 +443,15 @@
 
                 </div>
             </section>
-                <footer class="main-footer">
-                    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-                    All rights reserved.
-                    <div class="float-right d-none d-sm-inline-block">
-                        <b>Version</b> 3.1.0
-                    </div>
-                </footer>
-           
+            <footer class="main-footer">
+                <strong>Project Adress <a class="footer-link"
+                        href="https://github.com/Emir-Khan/ReCapProject-FrontEnd">GitHub <a
+                            href="https://github.com/Emir-Khan/ReCapProject-FrontEnd"><i
+                                class="fab fa-github"></i></a></a>
+                    Developed By <a class="footer-link" href="https://github.com/Emir-Khan">Emirhan Köseoğlu </a><a
+                        href="https://github.com/Emir-Khan"><i class="fab fa-github"></i></a></strong>
+            </footer>
+
         </div>
     </div>
 </body>
