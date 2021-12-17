@@ -47,10 +47,12 @@ export class AccountComponent implements OnInit {
   }
 
   getRentalsByUserId() {
-    this.rentalService.getRentalByUserId(this.user.id).subscribe(response => {
+    this.rentalService.getRentalByUserId(this.user.id).subscribe(async response => {
       this.rentals = response.data
       this.hasRental = true
-      this.dataLoaded = true
+      await setInterval(()=>{
+        this.dataLoaded=true
+      },1000)
     }, responseErr => {
       this.dataLoaded = true
       this.toastrService.info("Kullanıcı Henüz Araç Kiralamadı", "System")
