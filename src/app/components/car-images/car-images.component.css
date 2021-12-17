@@ -1,8 +1,14 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-.product{
-    width: 100%;
+.product {
+  object-fit: contain;
+  height: 250px;
+  cursor: pointer;
+}
+.card{
+    height: 410px;
+}
+.card-img{
     height: 250px;
-    cursor: pointer;
 }
