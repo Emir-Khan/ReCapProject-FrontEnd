@@ -14,6 +14,7 @@ export class RentalComponent implements OnInit {
   rentals: Rental[]
   carImage: CarImage
   hasRental: boolean = false
+  dataLoaded:boolean = false
 
   filterText: string
   carImageUrl: string
@@ -31,9 +32,13 @@ export class RentalComponent implements OnInit {
       for (let i = 0; i < this.rentals.length; i++) {
         this.carImageService
           .getImagesByCarId(this.rentals[i].carId)
-          .subscribe((response) => {
+          .subscribe(async (response) => {
             this.carImage = response.data[0];
             this.carImageUrl = this.carImageService.getCarImageUrl(this.carImage.id)
+            await setInterval(()=>{
+              this.dataLoaded=true
+            },1000)
+            
           });
 
       }
