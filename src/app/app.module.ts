@@ -43,6 +43,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { HasImagePipe } from './pipes/has-image.pipe';
 
 
 
@@ -81,6 +82,7 @@ export function tokenGetter() {
     AdminPanelComponent,
     UsersComponent,
     UserDetailsComponent,
+    HasImagePipe,
   ],
   imports: [
     BrowserModule,
