@@ -12,6 +12,7 @@ export class CarComponent implements OnInit {
   cars: Car[];
   filterText: string
   dataLoaded: boolean = false
+  filtered:boolean = false
 
   constructor(private carService: CarService, private activatedRoute: ActivatedRoute) { }
 
@@ -33,7 +34,7 @@ export class CarComponent implements OnInit {
   }
 
   getCars() {
-    this.carService.getCars().subscribe((response) => {
+    this.carService.getCarsDetails().subscribe((response) => {
       this.cars = response.data
       this.dataLoaded = true
     });
@@ -42,6 +43,7 @@ export class CarComponent implements OnInit {
   getCarsByFilter(colorId: number, brandId: number) {
     this.carService.getCarsByFilter(colorId, brandId).subscribe(response => {
       this.cars = response.data
+      this.filtered = true
       this.dataLoaded = true
     })
   }
