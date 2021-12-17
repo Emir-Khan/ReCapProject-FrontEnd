@@ -8,7 +8,7 @@
           }} - ReCapProject" routerLink="/cars/{{car.carId}}" />
       </div>
       <div class="card-body">
-        <span class="model-year border border-secondary text-muted rounded-1 px-3 fw-light">
+        <span class="model-year border border-secondary float-right text-muted rounded-1 px-3 fw-light">
           {{ car.modelYear }}
         </span>
         <h5 class="card-title">
@@ -19,7 +19,8 @@
       </div>
     </div>
 
-    <ul class="list-group col-md-8 w-25 mt-4 description" *ngFor="let car of cars">
+    <div class="col-md-8">
+    <ul class="list-group w-25 float-right mt-4 description" *ngFor="let car of cars">
       <li class="list-group-item"><b>Marka:</b> {{car.brandName}}</li>
       <li class="list-group-item"><b>Model:</b> {{car.carName}}</li>
       <li class="list-group-item"><b>Renk :</b> {{car.colorName}}</li>
@@ -27,13 +28,13 @@
       <li class="list-group-item"><b>Model Yılı:</b> {{car.modelYear}}</li>
       <li class="list-group-item"><b>Günlük Fiyat:</b> ${{car.dailyPrice}}</li>
     </ul>
-
+  </div>
     <div class="card w-50 h-25 date-card" *ngFor="let car of cars">
       <div class="card-body" [formGroup]="rentAddForm">
 
         <mat-form-field class="w-75" id="rentDatePicker" appearance="fill">
           <mat-label>Rent Date</mat-label>
-          <input matInput [matDatepicker]="picker1"  [matDatepickerFilter]="myFilter" formControlName="rentDate">
+          <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter" formControlName="rentDate">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
@@ -41,13 +42,9 @@
           <ngx-mat-timepicker formControlName="date2"></ngx-mat-timepicker>
         </form>
 
-
-
-
-
         <mat-form-field class="w-75 mt-5" appearance="fill">
           <mat-label>Return Date</mat-label>
-          <input matInput [matDatepicker]="picker2" formControlName="returnDate">
+          <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter" formControlName="returnDate">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>

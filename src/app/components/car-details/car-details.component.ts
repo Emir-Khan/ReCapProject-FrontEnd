@@ -8,7 +8,6 @@ import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms"
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { RentalService } from 'src/app/services/rental.service';
-import { DateFilterFn, MatDatepicker } from '@angular/material/datepicker';
 import { Rental } from 'src/app/models/rental';
 
 
@@ -31,18 +30,17 @@ export class CarDetailsComponent implements OnInit {
   dates:Date[] =[]
   myFilter = (d: Date|null): boolean => {
     const date =d.getDate();
-    console.log(this.dates)
     let sortedDates= this.dates.sort((a:Date,b:Date)=> a.getTime()-b.getTime())
-    console.log(sortedDates)
-      
-      if (2021 == new Date(sortedDates[this.index]).getFullYear()) {
 
-        console.log(date)
-        console.log(sortedDates[this.index].getDate())
-        console.log(this.index)
+    console.log(date)
+    console.log(new Date(sortedDates[this.index]).getDate())
+    console.log(this.index)
+      if (2021 == new Date(sortedDates[this.index]).getFullYear()) {
+        console.log("if") 
         var responsedDate=sortedDates[this.index].getDate()==date? false:true;
-        sortedDates[this.index].getDate()==date? false:true;
+
         if(sortedDates[this.index].getDate()==date) this.index++
+        if(sortedDates[sortedDates.length-1].getDate()==date) this.index =0
         return responsedDate
       }  
 
@@ -116,13 +114,19 @@ export class CarDetailsComponent implements OnInit {
   }
 
   findFilterDates(){
-    console.log(this.rentals)
+    var carRentals =[]
     for (let i = 0; i < this.rentals.length; i++) {
-      this.rentals[i].rentDate = new Date(new Date(new Date(this.rentals[i].rentDate).setMinutes(0)).setHours(0))
-      this.rentals[i].returnDate = new Date(new Date(new Date(this.rentals[i].returnDate).setMinutes(0)).setHours(0))
-      let rentDate = new Date(this.rentals[i].rentDate)
-      let returnDate = new Date(this.rentals[i].returnDate)
-      this.dates.push(this.rentals[i].returnDate) 
+      if (this.rentals[i].carId == this.carID) {
+        carRentals.push(this.rentals[i])
+      }
+    }
+    console.log(carRentals)
+    for (let i = 0; i < carRentals.length; i++) {
+      carRentals[i].rentDate = new Date(new Date(new Date(this.rentals[i].rentDate).setMinutes(0)).setHours(0))
+      carRentals[i].returnDate = new Date(new Date(new Date(this.rentals[i].returnDate).setMinutes(0)).setHours(0))
+      let rentDate = new Date(carRentals[i].rentDate)
+      let returnDate = new Date(carRentals[i].returnDate)
+      this.dates.push(carRentals[i].returnDate) 
       while (rentDate<returnDate) {
         console.log("in")
         this.dates.push(returnDate) 
