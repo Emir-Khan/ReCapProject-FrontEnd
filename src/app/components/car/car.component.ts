@@ -1,3 +1,4 @@
+import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Car } from 'src/app/models/car';
@@ -7,6 +8,19 @@ import { CarService } from 'src/app/services/car.service';
   selector: 'app-car',
   templateUrl: './car.component.html',
   styleUrls: ['./car.component.css'],
+ /*  animations:[
+    
+    trigger('fade', [
+      transition("* => *", [
+        query(".card", style({ opacity: 0, transform: "translateX(-100%)" })),
+        query(".card",
+          stagger("300ms", [
+            animate("500ms", style({ transform: "translateX(0)",opacity: 1 }))
+          ]))
+
+      ])
+    ])
+  ] */
 })
 export class CarComponent implements OnInit {
   cars: Car[];

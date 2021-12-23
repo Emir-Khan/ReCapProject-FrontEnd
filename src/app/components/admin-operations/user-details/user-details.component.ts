@@ -1,3 +1,4 @@
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +13,20 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css']
+  styleUrls: ['./user-details.component.css'],
+  animations: [
+
+    trigger('rents', [
+      transition("* => *", [
+        query(".card", style({ opacity: 0, transform: "translateX(-100%) translateY(-50%)" })),
+        query(".card",
+          stagger("300ms", [
+            animate("500ms", style({ transform: "translateX(0)", opacity: 1 }))
+          ]))
+
+      ])
+    ])
+  ]
 })
 export class UserDetailsComponent implements OnInit {
   user: User
@@ -89,16 +103,13 @@ export class UserDetailsComponent implements OnInit {
             this.userTag = "Admin"; this.tagClass = "text-center text-bold text-danger"
             console.log(this.userTag)
           } else if ((this.roles[i].name == "car.add" || this.roles[i].name == "car.delete" || this.roles[i].name == "user.delete")
-           && (this.userTag != "Admin")) {
+            && (this.userTag != "Admin")) {
             this.userTag = "Moderator"; this.tagClass = "text-center text-bold text-warning"
           }
         }
       }
       console.log(this.isArray)
     })
-
-
-
   }
 
   change() {

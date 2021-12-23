@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import * as Aos from 'aos';
 import { ToastrService } from 'ngx-toastr';
 import { Brand } from 'src/app/models/brand';
 import { Car } from 'src/app/models/car';
@@ -20,8 +21,10 @@ export class CarAddComponent implements OnInit {
   carAddForm: FormGroup;
   deleteCarForm: FormGroup;
   addCarImageForm: FormGroup
-  selectedFile: File
   updateCarForm: FormGroup
+  deleteImageForm: FormGroup
+  selectedFile: File
+
   carSelect: number = -1
 
   imageSrc: any = "../../../../assets/img/car-image-add-default.png"
@@ -32,13 +35,14 @@ export class CarAddComponent implements OnInit {
 
   firstBrand: Brand
 
-  carNameText: string 
-  modelYearText: number 
-  descriptionText: string
+  carNameText: string = ""
+  modelYearText: number
+  descriptionText: string = ""
   dailyPriceText: number
-  brandSelect: number
-  colorSelect: number
-  carIdText:number 
+  brandSelect: number = -1
+  colorSelect: number = -1
+  carIdText: number
+  dataLoaded: boolean = false
 
   constructor(
     private brandService: BrandService,
@@ -54,15 +58,18 @@ export class CarAddComponent implements OnInit {
     this.createCarAddForm();
     this.createDeleteCarForm();
     this.createCarImageAddForm();
+    this.createDeleteImageForm();
 
     this.getCars()
     this.getBrands()
     this.getColors()
+    this.dataLoaded = true
+    this.createUpdateCarForm()
   }
 
   createCarImageAddForm() {
     this.addCarImageForm = this.formBuilder.group({
-      carId: ['', Validators.required]
+      carId: [-1, Validators.required]
     })
   }
 
@@ -71,9 +78,9 @@ export class CarAddComponent implements OnInit {
       carId: ['', Validators.required]
     })
   }
-  createUpdateCarForm(){
-    this.updateCarForm= this.formBuilder.group({
-      carId:[this.carIdText, Validators.required],
+  createUpdateCarForm() {
+    this.updateCarForm = this.formBuilder.group({
+      carId: [this.carIdText, Validators.required],
       brandId: [this.brandSelect, Validators.required],
       colorId: [this.colorSelect, Validators.required],
       carName: [this.carNameText, Validators.required],
@@ -92,6 +99,12 @@ export class CarAddComponent implements OnInit {
       dailyPrice: ['', Validators.required],
       description: ['', Validators.required],
     });
+  }
+
+  createDeleteImageForm() {
+    this.deleteImageForm = this.formBuilder.group({
+      carId: ['', Validators.required]
+    })
   }
 
 
@@ -141,9 +154,9 @@ export class CarAddComponent implements OnInit {
 
   changeTexts() {
     console.log(this.carSelect)
-    
+
     let data = this.cars.find(i => i.carId == this.carSelect)
-   
+
     this.carNameText = data.carName
     this.modelYearText = data.modelYear
     this.descriptionText = data.description
@@ -153,30 +166,33 @@ export class CarAddComponent implements OnInit {
     this.carIdText = data.carId
     console.log(this.carNameText +
       this.modelYearText +
-      this.descriptionText+
-      this.dailyPriceText +"d "+
-      this.brandSelect +"b "+
-      this.colorSelect +"c "+
-      this.carIdText +" cid")
-      this.createUpdateCarForm()
+      this.descriptionText +
+      this.dailyPriceText + "d " +
+      this.brandSelect + "b " +
+      this.colorSelect + "c " +
+      this.carIdText + " cid")
+    this.createUpdateCarForm()
   }
 
-  updateCar(){
+  updateCar() {
     console.log(this.carNameText +
       this.modelYearText +
-      this.descriptionText+
-      this.dailyPriceText +"d "+
-      this.brandSelect +"b "+
-      this.colorSelect +"c "+
-      this.carIdText +" cid")
+      this.descriptionText +
+      this.dailyPriceText + "d " +
+      this.brandSelect + "b " +
+      this.colorSelect + "c " +
+      this.carIdText + " cid")
     console.log(this.updateCarForm.value)
     if (this.updateCarForm.valid) {
-      let updateModule = Object.assign({},this.updateCarForm.value)
-      this.carService.updateCar(updateModule).subscribe(response=>{
-        this.toastService.success(response.message,"Başarılı")
+      let updateModule = Object.assign({}, this.updateCarForm.value)
+      updateModule.brandId = new Number(updateModule.brandId)
+      updateModule.colorId = new Number(updateModule.colorId)
+      this.carService.updateCar(updateModule).subscribe(response => {
+        this.toastService.success(response.message, "Başarılı")
+        this.getCars()
       })
-    }else{
-      this.toastService.error("Formunuz Ekisk","Hata")
+    } else {
+      this.toastService.error("Formunuz Ekisk", "Hata")
     }
   }
 
@@ -198,20 +214,34 @@ export class CarAddComponent implements OnInit {
     }
   }
 
-  delete() {
+  deleteCar() {
     if (this.deleteCarForm.valid) {
       let deleteModule = Object.assign({}, this.deleteCarForm.value)
-      this.carImageService.getImagesByCarId(deleteModule.carId).subscribe(response => {
-        this.carImageService.deleteImage(response.data[0]).subscribe(response => {
-          this.toastService.info(response.message, "Sistem")
-        })
-      })
       this.carService.deleteCar(deleteModule).subscribe(response => {
         this.toastService.success(response.message, "İşlem Başarılı")
+      })
+      this.carImageService.deleteImage(deleteModule.carId).subscribe(response => {
+        this.toastService.info(response.message, "Sistem")
         this.getCars()
       })
     } else {
       this.toastService.error("Formunuz Eksik", "Hata")
     }
   }
+
+  deleteImage() {
+    if (this.deleteImageForm.valid) {
+      let deleteModule = Object.assign({}, this.deleteImageForm.value)
+      this.carImageService.getCarImageByCarId(deleteModule.carId).subscribe(response => {
+        console.log(response)
+        this.carImageService.deleteImage(response.data).subscribe(response => {
+          this.toastService.info(response.message, "Sistem")
+          this.getCars()
+        })
+      })
+    } else {
+      this.toastService.error("Formunuz Eksik", "Hata")
+    }
+  }
+
 }

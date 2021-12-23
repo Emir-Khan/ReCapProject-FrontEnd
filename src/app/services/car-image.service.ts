@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CarImage } from '../models/carImage';
 import { ListResponseModel } from '../models/listResponseModel';
 import { ResponseModel } from '../models/responseModel';
+import { SingleResponseModel } from '../models/singleResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,14 @@ export class CarImageService {
 
   getImagesByCarId(id: number): Observable<ListResponseModel<CarImage>> {
     return this.httpClient.get<ListResponseModel<CarImage>>(
-      `${this.apiUrl}getcarimagebycarid?id=${id}`
+      `${this.apiUrl}getcarimagedetailsbycarid?id=${id}`
     );
   }
   getCarImageUrl(id: number): string {
     return `${this.apiUrl}getfilebyid?id=${id}`;
+  }
+
+  getCarImageByCarId(id:number):Observable<SingleResponseModel<CarImage>>{
+    return this.httpClient.get<SingleResponseModel<CarImage>>(this.apiUrl+"getcarimagebycarid?id="+id)
   }
 }

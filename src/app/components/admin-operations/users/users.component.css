@@ -1,6 +1,9 @@
-.content{
-    min-height: 75vh;
+.content {
+  min-height: 75vh;
 }
-.card-footer{
-    text-align: center;
+.card-footer {
+  text-align: center;
+}
+::ng-deep pagination-controls a {
+  text-decoration: none !important;
 }

@@ -1,9 +1,8 @@
 .car-delete {
   padding-left: 0px !important;
   padding-right: 0px !important;
-  margin-left: 50px;
-  /* margin-right for container symmetry */
-  margin-right: 0.75rem;
+
+
 }
 .car-data-add {
   display: flex !important;
@@ -11,9 +10,8 @@
 .car-image-add {
   padding-left: 0px !important;
   padding-right: 0px !important;
-  margin-right: 50px;
-  /* margin-left for container symmetry */
-  margin-left: 0.75rem;
+
+
 }
 /* .image-upload>input {
     display: none !important;

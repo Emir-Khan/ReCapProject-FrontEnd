@@ -69,13 +69,12 @@ export class PaymentComponent implements OnInit {
       console.log(exp)
       if (exp > new Date()) {
         this.rentService.addRental(rentModule).subscribe(response => {
-          this.toastrService.info(response.message, "Sistem")
-          this.toastrService.success("Ödeme Başarılı", "Başarı")
           this.route.navigate([''])
             .then(() => {
-              window.location.reload();
+              this.toastrService.info(response.message, "Sistem")
+              this.toastrService.success("Ödeme Başarılı", "Başarı")
             });
-            
+
         }, responseErr => {
           this.toastrService.error(responseErr.err, "Hata")
         })

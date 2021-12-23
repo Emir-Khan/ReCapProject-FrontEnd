@@ -48,22 +48,23 @@
             console.log("For If")
             ++sellCount;
             ++deleteCount
-            
+
           }
           if (i == rentals.length - 1) {
-              var test = rentals.splice(item, deleteCount)
-              console.log(deleteCount + " Delete Count")
-              deleteCount = 0
-              salesDates.push(new Date(item.rentDate).getMonth()+". Month "+ new Date(item.rentDate).getDate()+". Day")
+            var test = rentals.splice(item, deleteCount)
+            console.log(deleteCount + " Delete Count")
+            deleteCount = 0
+            console.log(item)
+            salesDates.push(item.rentDate.getFullYear() + " Year " + item.rentDate.getMonth() + ". Month " + item.rentDate.getDate() + ". Day")
 
-              sellAmount.push(sellCount == 0 ? 1 : sellCount)
-            }
+            sellAmount.push(sellCount == 0 ? 1 : sellCount)
+          }
         }
         console.log("Out For")
 
         sellCount = 1
       });
-
+      
       console.log(salesDates)
       console.log(sellAmount)
 

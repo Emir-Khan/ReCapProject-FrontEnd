@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-md-8">
-    <ul class="list-group w-25 float-right mt-4 description" *ngFor="let car of cars">
+    <ul class="list-group w-50 float-right mt-4 description" *ngFor="let car of cars">
       <li class="list-group-item"><b>Marka:</b> {{car.brandName}}</li>
       <li class="list-group-item"><b>Model:</b> {{car.carName}}</li>
       <li class="list-group-item"><b>Renk :</b> {{car.colorName}}</li>
@@ -34,7 +34,7 @@
 
         <mat-form-field class="w-75" id="rentDatePicker" appearance="fill">
           <mat-label>Rent Date</mat-label>
-          <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter" formControlName="rentDate">
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [matDatepickerFilter]="myFilter" formControlName="rentDate">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
@@ -44,7 +44,7 @@
 
         <mat-form-field class="w-75 mt-5" appearance="fill">
           <mat-label>Return Date</mat-label>
-          <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter" formControlName="returnDate">
+          <input matInput [matDatepicker]="picker2" [min]="minDate" [matDatepickerFilter]="myFilter" formControlName="returnDate">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>

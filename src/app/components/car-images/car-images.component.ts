@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import * as Aos from 'aos';
 import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
 import { CarImage } from 'src/app/models/carImage';
@@ -12,10 +13,10 @@ import { CarImageService } from 'src/app/services/car-image.service';
   styleUrls: ['./car-images.component.css']
 })
 export class CarImagesComponent implements OnInit {
-
-  carImage!: CarImage;
+  dataGet:boolean = false
+  carImage: CarImage;
   carImageUrl: string
-  @Input() car!: Car;
+  @Input() car: Car;
   constructor(
     private carImageService:CarImageService,
     private toastrService:ToastrService
@@ -31,6 +32,7 @@ export class CarImagesComponent implements OnInit {
       .subscribe((response) => {
         this.carImage = response.data[0];
         this.carImageUrl = this.carImageService.getCarImageUrl(this.carImage.id)
+        this.dataGet=true
       });
   }
 

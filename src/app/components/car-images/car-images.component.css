@@ -12,3 +12,14 @@
 .card-img{
     height: 250px;
 }
+.card{
+    background-color: white !important;
+}
+img{
+  object-fit: contain;
+  transition: object-fit 1s;
+}
+img:hover{
+  object-fit: cover !important;
+  transition: object-fit 1s;
+}

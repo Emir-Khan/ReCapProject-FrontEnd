@@ -1,8 +1,10 @@
-<div class="card bg-light rounded-2 shadow overflow-hidden mb-3">
+<div data-aos="zoom-out" class="card bg-light rounded-2 shadow overflow-hidden mb-3">
   <div class="card-img d-flex justify-content-center align-items-center cursor-pointer">
+    <a href="/cars/{{car.carId}}">
+      <app-spinner style="margin: auto;" *ngIf="!dataGet"></app-spinner>
     <img src="{{ carImageUrl }}" class="card-img-top product" alt="Rent {{ car.brandName }} {{
           car.carName
-        }}" routerLink="/cars/{{car.carId}}" />
+        }}"  /></a>
   </div>
   <div class="card-body">
     <span class="model-year border border-secondary text-muted rounded-1 px-3 fw-light float-right">
@@ -12,8 +14,8 @@
       {{ car.brandName }} {{ car.carName }}
     </h5>
     <p class="mt-1 card-text text-success fs-3">${{ car.dailyPrice }}</p>
-    <button class="btn btn-primary w-100" routerLink="/cars/{{car.carId}}">
+    <a class="btn btn-primary w-100" href="/cars/{{car.carId}}">
       Rent Now
-    </button>
+    </a>
   </div>
 </div>

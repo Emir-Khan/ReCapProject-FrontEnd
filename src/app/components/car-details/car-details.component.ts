@@ -26,26 +26,32 @@ export class CarDetailsComponent implements OnInit {
   userId: number
   carID: number
   currentYear: number;
-  index:number =0
-  dates:Date[] =[]
-  myFilter = (d: Date|null): boolean => {
-    const date =d.getDate();
-    let sortedDates= this.dates.sort((a:Date,b:Date)=> a.getTime()-b.getTime())
-
+  index: number = 0
+  dates: Date[] = []
+  minDate:Date= new Date()
+  
+  myFilter = (d: Date | null): boolean => {
+    const date = d.getDate();
+    const month = d.getMonth()
+    let sortedDates = this.dates.sort((a: Date, b: Date) => a.getTime() - b.getTime())
+    console.log(sortedDates)
+  
     console.log(date)
     console.log(new Date(sortedDates[this.index]).getDate())
     console.log(this.index)
-      if (2021 == new Date(sortedDates[this.index]).getFullYear()) {
-        console.log("if") 
-        var responsedDate=sortedDates[this.index].getDate()==date? false:true;
+    if (month == new Date(sortedDates[this.index]).getMonth()) {
+      console.log("if")
+      var responsedDate = sortedDates[this.index].getDate() == date ? false : true;
 
-        if(sortedDates[this.index].getDate()==date) this.index++
-        if(sortedDates[sortedDates.length-1].getDate()==date) this.index =0
-        return responsedDate
-      }  
+      if (sortedDates[this.index].getDate() == date) this.index++
 
+      return responsedDate
+    }
+
+    if (sortedDates[this.index]==sortedDates[sortedDates.length]) {this.index = 0; console.log("a")}
     return true
   }
+
   returnDateForm: FormGroup
   timeGroup: FormGroup
 
@@ -106,15 +112,16 @@ export class CarDetailsComponent implements OnInit {
     })
   }
 
-  getRentals(){
-    this.rentalService.getRentals().subscribe(response=>{
-      this.rentals= response.data
+  getRentals() {
+    this.rentalService.getRentals().subscribe(response => {
+      this.rentals = response.data
+      console.log(this.rentals)
       this.findFilterDates()
     })
   }
 
-  findFilterDates(){
-    var carRentals =[]
+  findFilterDates() {
+    var carRentals = []
     for (let i = 0; i < this.rentals.length; i++) {
       if (this.rentals[i].carId == this.carID) {
         carRentals.push(this.rentals[i])
@@ -122,17 +129,17 @@ export class CarDetailsComponent implements OnInit {
     }
     console.log(carRentals)
     for (let i = 0; i < carRentals.length; i++) {
-      carRentals[i].rentDate = new Date(new Date(new Date(this.rentals[i].rentDate).setMinutes(0)).setHours(0))
-      carRentals[i].returnDate = new Date(new Date(new Date(this.rentals[i].returnDate).setMinutes(0)).setHours(0))
+      carRentals[i].rentDate = new Date(new Date(new Date(carRentals[i].rentDate).setMinutes(0)).setHours(0))
+      carRentals[i].returnDate = new Date(new Date(new Date(carRentals[i].returnDate).setMinutes(0)).setHours(0))
       let rentDate = new Date(carRentals[i].rentDate)
       let returnDate = new Date(carRentals[i].returnDate)
-      this.dates.push(carRentals[i].returnDate) 
-      while (rentDate<returnDate) {
+      this.dates.push(carRentals[i].returnDate)
+      while (rentDate < returnDate) {
         console.log("in")
-        this.dates.push(returnDate) 
+        this.dates.push(returnDate)
         returnDate = new Date(returnDate.setHours(-24))
       }
-     
+
     }
     console.log(this.dates)
   }
@@ -157,7 +164,7 @@ export class CarDetailsComponent implements OnInit {
           this.toastrService.info("Ödeme bilgilerinizi giriniz", "Sistem")
           this.router.navigate(["cars/" + this.carID + "/payment"])
         }, responseError => {
-          this.toastrService.error(responseError.error.message, "Hata")
+          this.toastrService.error("Hatalı Tarih Girişi", "Hata")
         })
       } else {
         this.toastrService.error("Seçtiğiniz tarihler uygun değil", "Hata")

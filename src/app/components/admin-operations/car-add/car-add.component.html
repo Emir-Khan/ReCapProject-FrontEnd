@@ -126,7 +126,7 @@
                                 <li class="nav-item">
                                     <a href="/admin/cars" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Add & Delete Cars</p>
+                                        <p>Car Operations</p>
                                     </a>
                                 </li>
 
@@ -186,7 +186,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Add & Delete Cars</li>
+                                <li class="breadcrumb-item active">Car Operations</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -198,9 +198,9 @@
 
 
 
-                    <div class="card">
+                    <div class="card card-outline card-primary">
                         <div class="row">
-                            <div class="col-md-4 car-data-add">
+                            <div class="col-md-4 car-data-add" data-aos="fade">
                                 <img src="assets/img/default-car-add.png" class="img-fluid" alt="...">
                             </div>
                             <div class="col-md-8">
@@ -271,7 +271,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" style="height: 430px;">
+                    <div class="card card-outline card-warning" style="height: 430px;">
                         <div class="row">
                             <div class="col-md-4 car-data-add">
                                 <img src="assets/img/default-car-add.png" class="img-fluid" alt="...">
@@ -285,7 +285,7 @@
                                         <option *ngFor="let car of cars" [value]="car.carId">ID: {{car.carId}} | Name:
                                             {{car.carName}}</option>
                                     </select>
-                                    <form style="margin-top: 30px;" [formGroup]="updateCarForm">
+                                    <form style="margin-top: 30px;" *ngIf="dataLoaded" [formGroup]="updateCarForm">
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3">
@@ -313,20 +313,22 @@
                                             <div class="col-6">
                                                 <div class="mb-3" id="brandId">
                                                     <label for="brandId">Brand ID</label>
-                                                    <select [value]="brandSelect" name="brandSelect" 
+                                                    <select [value]="brandSelect" formControlName="brandId" name="brandSelect" 
                                                         class="form-select" aria-label="Default select example">
+                                                        <option value="-1">Select a Brand</option>
                                                         <option value="{{brand.brandId}}" *ngFor="let brand of brands">
                                                             {{brand.brandName}}
-                                                        </option>>
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="colorId">Color ID</label>
-                                                    <select [value]="colorSelect" name="colorSelect" 
+                                                    <select [value]="colorSelect" formControlName="colorId" name="colorSelect" 
                                                         class="form-select" aria-label="Default select example">
+                                                        <option value="-1">Select a Color</option>
                                                         <option value="{{color.colorId}}" *ngFor="let color of colors">
                                                             {{color.colorName}}
-                                                        </option>>
+                                                        </option>
                                                     </select>
                                                 </div>
 
@@ -335,7 +337,7 @@
                                                         <div class="col-6">
                                                             <label for="dailyPrice">Daily Price</label>
                                                             <div class="form-group">
-                                                                <input [value]="dailyPriceText" type="number"
+                                                                <input value="{{dailyPriceText}}" type="number"
                                                                     id="dailyPrice" formControlName="dailyPrice" class="form-control"
                                                                     placeholder="Daily Price">
                                                             </div>
@@ -363,40 +365,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="card car-image-add mb-3 col">
-                            <div class="row g-0">
-                                <div class="col-md-4 car-img-add">
-                                    <label for="file-input" class="file-label">
-                                        <img [src]="imageSrc" class="img-fluid car-img" alt="...">
-                                    </label>
-                                    <input id="file-input" accept=".jpg,.png" (change)="onFileSelected($event)"
-                                        type="file">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Car Image Add</h5>
-
-                                        <form [formGroup]="addCarImageForm">
-                                            <div class="mb-3">
-                                                <label for="carIdForImage">Car ID</label>
-                                                <div class="form-group">
-                                                    <input type="number" id="carIdForImage" formControlName="carId"
-                                                        class="form-control" placeholder="Car ID">
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <p class="card-text"><small class="text-muted">Requires Only Car ID and Image
-                                                File</small> <button class="btn btn-primary" (click)="onUpload()"
-                                                style="float: right;">Add</button></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card car-delete border-danger mb-3 col">
-                            <div class="card-header">Delete Car and Picture</div>
+                        
+                        <div class="card ml-2 car-delete border-danger mb-3 col">
+                            <div class="card-header">Delete Picture</div>
                             <div class="card-body text-danger">
-                                <form [formGroup]="deleteCarForm">
+                                <form [formGroup]="deleteImageForm">
                                     <div class="mb-3">
                                         <label for="id">Car ID</label>
                                         <div class="form-group">
@@ -409,7 +382,60 @@
 
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-fill btn-danger" (click)="delete()">Sil</button>
+                                <button class="btn btn-fill btn-danger" (click)="deleteImage()">Sil</button>
+                            </div>
+                        </div>
+                        <div class="card car-image-add mb-3 mr-3 ml-3 col">
+                            <div class="row g-0">
+                                <div class="col-md-4 car-img-add">
+                                    <label for="file-input" class="file-label">
+                                        <img [src]="imageSrc" class="img-fluid car-img" alt="...">
+                                    </label>
+                                    <input id="file-input" accept=".jpg,.png" (change)="onFileSelected($event)"
+                                        type="file">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5  class="card-title">Car Image Add</h5>
+
+                                        <form [formGroup]="addCarImageForm">
+                                            <div class="mb-3" id="carId">
+                                                <label for="carId">Car ID</label>
+                                                <select formControlName="carId" name="carIdSelect" 
+                                                    class="form-select" aria-label="Default select example">
+                                                    <option value="-1" selected>Select a Car</option>
+                                                    <option value="{{car.carId}}" *ngFor="let car of cars">
+                                                        ID: {{car.carId}} | Name:
+                                            {{car.carName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </form>
+
+                                        <p class="card-text"><small class="text-muted">Requires Only Car ID and Image
+                                                File</small> <button class="btn btn-primary" (click)="onUpload()"
+                                                style="float: right;">Add</button></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mr-2 car-delete border-danger mb-3 col">
+                            <div class="card-header">Delete Car And Picture</div>
+                            <div class="card-body text-danger">
+                                <form [formGroup]="deleteImageForm">
+                                    <div class="mb-3">
+                                        <label for="id">Car ID</label>
+                                        <div class="form-group">
+                                            <input type="number" id="id" formControlName="carId" class="form-control"
+                                                placeholder="Car ID">
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-fill btn-danger" (click)="deleteCar()">Sil</button>
                             </div>
                         </div>
                     </div>
@@ -426,7 +452,7 @@
                             <th>Has IMG?</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let car of cars">
+                            <tr data-aos="fade-right" *ngFor="let car of cars">
                                 <td>{{car.carId}}</td>
                                 <td>{{car.brandId}}</td>
                                 <td>{{car.colorId}}</td>
@@ -443,7 +469,7 @@
 
                 </div>
             </section>
-            <footer class="main-footer">
+            <footer class="main-footer mt-5">
                 <strong>Project Adress <a class="footer-link"
                         href="https://github.com/Emir-Khan/ReCapProject-FrontEnd">GitHub <a
                             href="https://github.com/Emir-Khan/ReCapProject-FrontEnd"><i

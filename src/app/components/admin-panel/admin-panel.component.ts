@@ -66,8 +66,6 @@ export class AdminPanelComponent implements OnInit {
   getRentals() {
     this.retnalService.getRentals().subscribe(response => {
       this.rentals = response.data
-      
-      
     })
   }
 

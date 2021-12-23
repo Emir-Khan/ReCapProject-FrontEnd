@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +11,14 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'app-navi',
   templateUrl: './navi.component.html',
   styleUrls: ['./navi.component.css'],
+  animations:[
+    trigger('logo',[
+      state('void',style({opacity:0})),
+      transition("void=>*",[
+        animate(800)
+      ])
+    ]),
+  ]
 })
 export class NaviComponent implements OnInit {
   user: User;

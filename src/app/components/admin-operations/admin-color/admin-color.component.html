@@ -58,14 +58,14 @@
     </div>
 </div>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Renk Adı</th>
     </thead>
     <tbody>
-        <tr *ngFor="let color of colors">
+        <tr data-aos="fade-right" *ngFor="let color of colors">
             <th>{{color.colorId}}</th>
             <td>{{color.colorName}}</td>
         </tr>
