@@ -1,19 +1,19 @@
-<div class="card mt-3">
+<div class="card card-primary card-outline mt-3">
     <div class="card-header">
-        <h5 class="card-title">Marka Ekle</h5>
+        <h5 class="card-title">Brand Ekle</h5>
     </div>
     <div class="card-body">
         <form [formGroup]="brandAddForm">
             <div class="row">
                 <div class="mb-3 col">
-                    <label for="brandName">Marka Adı</label>
+                    <label for="brandName">Brand Name</label>
                     <div class="form-group">
                         <input type="text" id="brandName" formControlName="brandName" class="form-control"
-                            placeholder="Marka adı">
+                            placeholder="Brand Name">
                     </div>
                 </div>
                 <div class="mb-3 col">
-                    <label for="brandId">Marka ID</label>
+                    <label for="brandId">Brand ID</label>
                     <div class="form-group">
                         <input class="form-control" type="text" placeholder="Brand ID"
                             aria-label="Disabled input example" disabled>
@@ -27,26 +27,26 @@
         <button class="btn btn-fill btn-primary" (click)="addBrand()">Ekle</button>
     </div>
 </div>
-<div class="card border-danger mt-3">
+<div class="card card-danger card-outline border-danger mt-3">
     <div class="card-header border-danger">
-        <h5 class="card-title">Marka Sil</h5>
+        <h5 class="card-title">Brand Sil</h5>
     </div>
     <div class="card-body">
         <form [formGroup]="brandDeleteForm">
             <div class="row">
                 <div class="mb-3 col">
-                    <label for="brandName">Marka ID</label>
+                    <label for="brandName">Brand ID</label>
                     <div class="form-group">
                         <input type="number" id="brandName" formControlName="brandId" class="form-control"
-                            placeholder="Marka adı">
+                            placeholder="Brand Name">
                     </div>
                 </div>
                 <div class="mb-3 col">
-                    <label for="brandId">Marka Adı</label>
+                    <label for="brandId">Brand Name</label>
                     <div class="form-group">
                         <input class="form-control" type="text" placeholder="Brand Name"
                             aria-label="Disabled input example" disabled>
-                        <div id="brandHelp" class="form-text">Marka silmek için sadece ID gerekir</div>
+                        <div id="brandHelp" class="form-text">Brand silmek için sadece ID gerekir</div>
                     </div>
                 </div>
             </div>
@@ -56,16 +56,52 @@
         <button class="btn btn-fill btn-danger" (click)="deleteBrand()">Sil</button>
     </div>
 </div>
+<div class="card card-warning card-outline mt-3">
+    <div class="card-header">
+        <h5 class="card-title pt-2">Brand Update</h5>
+        <select (change)="changeTexts()" [(ngModel)]="brandSelect" class="form-select float-right w-50"
+            aria-label="Default select example">
+            <option  value="-1">Select a Brand</option>
+            <option *ngFor="let brand of brands" [value]="brand.brandId">ID: {{brand.brandId}} | Name:
+                {{brand.brandName}}</option>
+        </select>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="brandUpdateForm">
+            <div class="row">
+                <div class="mb-3 col">
+                    <label for="brandName">Brand Name</label>
+                    <div class="form-group">
+                        <input [value]="brandNameText" formControlName="brandName" class="form-control" type="text"
+                            placeholder="Brand Name" aria-label="Disabled input example">
+
+                    </div>
+                </div>
+                <div class="mb-3 col">
+                    <label for="brandId">Brand ID</label>
+                    <div class="form-group">
+                        <input [value]="brandIdText" type="number" id="brandId" class="form-control"
+                            placeholder="Brand ID" disabled>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-fill btn-warning" (click)="updateBrand()">Update</button>
+    </div>
+</div>
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Marka Adı</th>
+            <th scope="col">Brand Name</th>
     </thead>
     <tbody>
         <tr data-aos="fade-right" *ngFor="let brand of brands">
             <th>{{brand.brandId}}</th>
-            <td>{{brand.brandName}}</td>
+            <td>{{brand.brandName |titlecase}}</td>
         </tr>
     </tbody>
 </table>

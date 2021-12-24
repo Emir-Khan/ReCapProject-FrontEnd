@@ -1,19 +1,19 @@
-<div class="card mt-3">
+<div class="card card-primary card-outline mt-3" id="color-add">
     <div class="card-header">
-        <h5 class="card-title">Renk Ekle</h5>
+        <h5 class="card-title">Color Ekle</h5>
     </div>
     <div class="card-body">
         <form [formGroup]="colorAddForm">
             <div class="row">
                 <div class="mb-3 col">
-                    <label for="colorName">Renk Adı</label>
+                    <label for="colorName">Color Name</label>
                     <div class="form-group">
                         <input type="text" id="colorName" formControlName="colorName" class="form-control"
-                            placeholder="Renk adı">
+                            placeholder="Color Name">
                     </div>
                 </div>
                 <div class="mb-3 col">
-                    <label for="colorId">Renk ID</label>
+                    <label for="colorId">Color ID</label>
                     <div class="form-group">
                         <input class="form-control" type="text" placeholder="Color ID"
                             aria-label="Disabled input example" disabled>
@@ -28,22 +28,22 @@
     </div>
 </div>
 
-<div class="card border-danger mt-3">
+<div class="card card-outline card-danger border-danger mt-3" id="color-delete">
     <div class="card-header border-danger">
-        <h5 class="card-title">Renk Sil</h5>
+        <h5 class="card-title">Color Sil</h5>
     </div>
     <div class="card-body">
         <form [formGroup]="colorDeleteForm">
             <div class="row">
                 <div class="mb-3 col">
-                    <label for="colorName">Renk ID</label>
+                    <label for="colorName">Color ID</label>
                     <div class="form-group">
                         <input type="number" id="colorId" formControlName="colorId" class="form-control"
-                            placeholder="Renk adı">
+                            placeholder="Color Name">
                     </div>
                 </div>
                 <div class="mb-3 col">
-                    <label for="colorId">Renk Adı</label>
+                    <label for="colorId">Color Name</label>
                     <div class="form-group">
                         <input class="form-control" type="text" placeholder="Color Name"
                             aria-label="Disabled input example" disabled>
@@ -57,12 +57,47 @@
         <button class="btn btn-fill btn-danger" (click)="deleteColor()">Sil</button>
     </div>
 </div>
+<div class="card card-outline card-warning mt-3" id="color-update">
+    <div class="card-header">
+        <h5 class="card-title pt-2">Color Update</h5>
+        <select (change)="changeTexts()" [(ngModel)]="colorSelect" class="form-select float-right w-50"
+            aria-label="Default select example">
+            <option selected value="-1">Select a Color</option>
+            <option *ngFor="let color of colors" [value]="color.colorId">ID: {{color.colorId}} | Name:
+                {{color.colorName}}</option>
+        </select>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="colorUpdateForm">
+            <div class="row">
+                <div class="mb-3 col">
+                    <label for="colorName">Color Name</label>
+                    <div class="form-group">
+                        <input [value]="colorNameText" formControlName="colorName" class="form-control" type="text"
+                            placeholder="Color Name" aria-label="Disabled input example">
 
+                    </div>
+                </div>
+                <div class="mb-3 col">
+                    <label for="colorId">Color ID</label>
+                    <div class="form-group">
+                        <input [value]="colorIdText" type="number" id="colorId" class="form-control"
+                            placeholder="Color ID" disabled>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-fill btn-warning" (click)="updateColor()">Update</button>
+    </div>
+</div>
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Renk Adı</th>
+            <th scope="col">Color Name</th>
     </thead>
     <tbody>
         <tr data-aos="fade-right" *ngFor="let color of colors">

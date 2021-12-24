@@ -11,7 +11,7 @@ import { SingleResponseModel } from '../models/singleResponseModel';
   providedIn: 'root'
 })
 export class CarImageService {
-  apiUrl=environment.baseUrl+"/carimages/"
+  apiUrl="https://localhost:44358/api/carimages/"
 
   constructor(private httpClient:HttpClient) { }
 

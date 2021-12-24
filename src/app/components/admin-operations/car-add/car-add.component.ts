@@ -78,15 +78,19 @@ export class CarAddComponent implements OnInit {
       carId: ['', Validators.required]
     })
   }
+
   createUpdateCarForm() {
     this.updateCarForm = this.formBuilder.group({
       carId: [this.carIdText, Validators.required],
       brandId: [this.brandSelect, Validators.required],
       colorId: [this.colorSelect, Validators.required],
+      brandName:[""],
+      colorName:[""],
       carName: [this.carNameText, Validators.required],
       modelYear: [this.modelYearText, Validators.required],
       dailyPrice: [this.dailyPriceText, Validators.required],
-      description: [this.descriptionText, Validators.required]
+      description: [this.descriptionText, Validators.required],
+      hasImage:[""]
     })
   }
 
@@ -107,7 +111,6 @@ export class CarAddComponent implements OnInit {
     })
   }
 
-
   onFileSelected(event: any) {
     this.selectedFile = <File>event.target.files[0]
     var reader = new FileReader();
@@ -123,9 +126,13 @@ export class CarAddComponent implements OnInit {
       const fd = new FormData()
       fd.append('image', this.selectedFile, this.selectedFile.name)
       console.log("tıklandı")
-      this.httpClient.post(environment.baseUrl + "/carimages/add?CarId=" + carImageModule.carId, fd).subscribe(response => {
+      this.httpClient.post("https://localhost:44358/api/carimages/add?CarId=" + carImageModule.carId, fd).subscribe(response => {
         this.toastService.info("Yüklendi", "Sistem")
-        this.getCars()
+        for (let i = 0; i < this.cars.length; i++) {
+          if (this.cars[i].carId == Number(carImageModule.carId)) {
+            this.cars[i].hasImage = true
+          }
+        }
       })
     } else {
       this.toastService.error("Formunuz Eksik", "Hata")
@@ -185,11 +192,24 @@ export class CarAddComponent implements OnInit {
     console.log(this.updateCarForm.value)
     if (this.updateCarForm.valid) {
       let updateModule = Object.assign({}, this.updateCarForm.value)
-      updateModule.brandId = new Number(updateModule.brandId)
-      updateModule.colorId = new Number(updateModule.colorId)
+      updateModule.brandId = Number(updateModule.brandId)
+      updateModule.colorId = Number(updateModule.colorId)
       this.carService.updateCar(updateModule).subscribe(response => {
         this.toastService.success(response.message, "Başarılı")
-        this.getCars()
+        for (let i = 0; i < this.cars.length; i++) {
+          if (this.cars[i].carId == Number(updateModule.carId)) {
+            let brand, color;
+            brand = this.brands.find(i => i.brandId == updateModule.brandId)
+            color = this.colors.find(i => i.colorId == updateModule.colorId)
+            updateModule.brandName = brand.brandName
+            updateModule.colorName = color.colorName
+            updateModule.hasImage= this.cars[i].hasImage
+            this.cars[i] = updateModule
+            console.log(this.cars[i])
+            console.log(updateModule)
+            this.carSelect = Number(this.cars[i].carId)
+          }
+        }
       })
     } else {
       this.toastService.error("Formunuz Ekisk", "Hata")
@@ -220,9 +240,11 @@ export class CarAddComponent implements OnInit {
       this.carService.deleteCar(deleteModule).subscribe(response => {
         this.toastService.success(response.message, "İşlem Başarılı")
       })
-      this.carImageService.deleteImage(deleteModule.carId).subscribe(response => {
-        this.toastService.info(response.message, "Sistem")
-        this.getCars()
+      this.carImageService.getCarImageByCarId(deleteModule.carId).subscribe(response => {
+        this.carImageService.deleteImage(response.data).subscribe(response => {
+          this.toastService.info(response.message, "Sistem")
+          this.getCars()
+        })
       })
     } else {
       this.toastService.error("Formunuz Eksik", "Hata")

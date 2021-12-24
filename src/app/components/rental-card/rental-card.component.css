@@ -1,13 +1,16 @@
 .img-fluid{
-    min-height: 258px;
-    max-height: 300px;
+    min-height: 308px;
+    max-height: 310px;
     min-width: 420px;
     max-width: 420px;
+    object-fit: cover !important;
+}
+.img-fluid:hover{
+    object-fit: contain !important;
 }
 
 .img-box{
     position: relative;
-    object-fit: cover !important;
 }
 
 .badge{

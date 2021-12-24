@@ -12,18 +12,26 @@ import { BrandService } from 'src/app/services/brand.service';
 export class AdminBrandComponent implements OnInit {
   brandAddForm: FormGroup;
   brandDeleteForm: FormGroup;
+  brandUpdateForm: FormGroup
   brands: Brand[];
+
+  brandNameText: string = ""
+  brandIdText: number
+
+  brandSelect: number = -1
 
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandService,
     private toastrService: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.createBrandAddForm();
     this.createBrandDeleteForm();
+    this.createBrandUpdateForm()
     this.getBrands();
+
   }
 
   createBrandDeleteForm() {
@@ -38,11 +46,24 @@ export class AdminBrandComponent implements OnInit {
     });
   }
 
+  createBrandUpdateForm() {
+    this.brandUpdateForm = this.formBuilder.group({
+      brandName: [this.brandNameText, Validators.required],
+      brandId: [this.brandIdText,Validators.required]
+    });
+  }
+
   getBrands() {
     this.brandService.getBrands().subscribe((response) => {
       this.brands = response.data;
-      console.log(response);
     });
+  }
+
+  changeTexts() {
+    let data = this.brands.find(b => b.brandId == this.brandSelect)
+    this.brandIdText = data.brandId
+    this.brandNameText = data.brandName
+    this.createBrandUpdateForm()
   }
 
   addBrand() {
@@ -54,11 +75,32 @@ export class AdminBrandComponent implements OnInit {
           this.getBrands();
         },
         (responseErr) => {
-          this.toastrService.error(responseErr.err, 'Hata');
+          this.toastrService.error(responseErr.status==400?"First Select A brand":"", 'Hata');
         }
       );
     } else {
       this.toastrService.error('Formunuz Eksik', 'Hata');
+    }
+    
+  }
+
+  updateBrand() {
+    if (this.brandUpdateForm.valid) {
+      let updateModule = Object.assign({},this.brandUpdateForm.value)
+      this.brandService.updateBrand(updateModule).subscribe(response=>{
+        this.toastrService.info(response.message,"Sistem")
+        for (let i = 0; i < this.brands.length; i++) {
+          if (this.brands[i].brandId ==updateModule.brandId) {
+            this.brands[i] = updateModule
+            this.brandSelect = this.brands[i].brandId
+          } 
+        }
+        
+      },responseError=>{
+        this.toastrService.error(responseError.message,"Error")
+      })
+    }else{
+      this.toastrService.error("First Select a Brand","Error")
     }
   }
 
@@ -71,7 +113,7 @@ export class AdminBrandComponent implements OnInit {
           this.getBrands();
         },
         (responseErr) => {
-          this.toastrService.error(responseErr.err, 'Hata');
+          this.toastrService.error(responseErr.message, 'Hata');
         }
       );
     } else {

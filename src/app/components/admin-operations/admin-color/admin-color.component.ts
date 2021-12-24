@@ -12,7 +12,12 @@ import { ColorService } from 'src/app/services/color.service';
 export class AdminColorComponent implements OnInit {
   colorAddForm: FormGroup;
   colorDeleteForm: FormGroup;
+  colorUpdateForm:FormGroup
   colors: Color[];
+
+  colorSelect:number = -1
+  colorNameText:string =""
+  colorIdText:number
 
   constructor(
     private colorService: ColorService,
@@ -23,12 +28,20 @@ export class AdminColorComponent implements OnInit {
   ngOnInit(): void {
     this.createColorAddForm();
     this.createColorDeleteForm();
+    this.createColorUpdateForm()
     this.getColors();
   }
 
   createColorDeleteForm() {
     this.colorDeleteForm = this.formBuilder.group({
       colorId: ['', Validators.required],
+    });
+  }
+
+  createColorUpdateForm() {
+    this.colorUpdateForm = this.formBuilder.group({
+      colorName: [this.colorNameText, Validators.required],
+      colorId: [this.colorIdText]
     });
   }
 
@@ -42,6 +55,13 @@ export class AdminColorComponent implements OnInit {
     this.colorService.getColors().subscribe((response) => {
       this.colors = response.data;
     });
+  }
+
+  changeTexts(){
+    let data = this.colors.find(b => b.colorId == this.colorSelect)
+    this.colorIdText = data.colorId
+    this.colorNameText = data.colorName
+    this.createColorUpdateForm()
   }
 
   addColor() {
@@ -58,6 +78,23 @@ export class AdminColorComponent implements OnInit {
       );
     } else {
       this.toastrService.error('Formunuz Eksik', 'Hata');
+    }
+  }
+
+  updateColor(){
+    if (this.colorUpdateForm.valid) {
+      let updateModule = Object.assign({},this.colorUpdateForm.value)
+      this.colorService.updateColor(updateModule).subscribe(response=>{
+        this.toastrService.info(response.message,"Sistem")
+        for (let i = 0; i < this.colors.length; i++) {
+          if (this.colors[i].colorId ==updateModule.colorId) {
+            this.colors[i] = updateModule
+            this.colorSelect = this.colors[i].colorId
+          } 
+        }
+      },responseError=>{
+        this.toastrService.error(responseError.message,"Error")
+      })
     }
   }
 
