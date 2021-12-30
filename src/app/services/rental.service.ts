@@ -12,7 +12,7 @@ export class RentalService {
 
   rent:Rental
 
-  apiUrl = 'https://localhost:44358/api/rentals/';
+  apiUrl = 'rentals/';
   constructor(private httpClient: HttpClient) {}
 
   getRentals(): Observable<ListResponseModel<Rental>> {

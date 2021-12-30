@@ -13,7 +13,7 @@ import { UserForUpdateDto } from '../models/userForUpdateDto';
 })
 export class UserService {
 
-  apiUrl = 'https://localhost:44358/api/users/';
+  apiUrl = 'http://localhost:5000/api/users/';
   constructor(private httpClient: HttpClient) {}
 
   getUserById(userId:number): Observable<SingleResponseModel<User>> {

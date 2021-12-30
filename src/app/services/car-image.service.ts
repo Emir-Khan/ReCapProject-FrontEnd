@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { CarImage } from '../models/carImage';
 import { ListResponseModel } from '../models/listResponseModel';
 import { ResponseModel } from '../models/responseModel';
@@ -11,7 +10,7 @@ import { SingleResponseModel } from '../models/singleResponseModel';
   providedIn: 'root'
 })
 export class CarImageService {
-  apiUrl="https://localhost:44358/api/carimages/"
+  apiUrl="http://localhost:5000/api/carimages/"
 
   constructor(private httpClient:HttpClient) { }
 

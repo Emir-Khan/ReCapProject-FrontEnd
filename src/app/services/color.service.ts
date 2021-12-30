@@ -9,7 +9,7 @@ import { ResponseModel } from '../models/responseModel';
   providedIn: 'root'
 })
 export class ColorService {
-  apiUrl = 'https://localhost:44358/api/colors/';
+  apiUrl = 'http://localhost:5000/api/colors/';
   constructor(private httpClient: HttpClient) {}
 
   getColors(): Observable<ListResponseModel<Color>> {

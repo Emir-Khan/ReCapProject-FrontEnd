@@ -126,7 +126,7 @@ export class CarAddComponent implements OnInit {
       const fd = new FormData()
       fd.append('image', this.selectedFile, this.selectedFile.name)
       console.log("tıklandı")
-      this.httpClient.post("https://localhost:44358/api/carimages/add?CarId=" + carImageModule.carId, fd).subscribe(response => {
+      this.httpClient.post("carimages/add?CarId=" + carImageModule.carId, fd).subscribe(response => {
         this.toastService.info("Yüklendi", "Sistem")
         for (let i = 0; i < this.cars.length; i++) {
           if (this.cars[i].carId == Number(carImageModule.carId)) {

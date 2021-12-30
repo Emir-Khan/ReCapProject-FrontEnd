@@ -9,7 +9,7 @@ import { ResponseModel } from '../models/responseModel';
   providedIn: 'root',
 })
 export class BrandService {
-  apiUrl = 'https://localhost:44358/api/brands/';
+  apiUrl = 'http://localhost:5000/api/brands/';
   constructor(private httpClient: HttpClient) {}
 
   getBrands(): Observable<ListResponseModel<Brand>> {
