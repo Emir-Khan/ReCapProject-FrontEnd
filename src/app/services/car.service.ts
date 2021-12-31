@@ -5,12 +5,13 @@ import { ListResponseModel } from '../models/listResponseModel';
 import { Car } from '../models/car';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { ResponseModel } from '../models/responseModel';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarService {
-  apiUrl = 'http://localhost:5000/api/cars/';
+  apiUrl = environment.apiUrl+'cars/';
   constructor(private httpClient: HttpClient) {}
 
   addCar(car:Car):Observable<ResponseModel>{

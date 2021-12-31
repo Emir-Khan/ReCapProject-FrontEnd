@@ -14,7 +14,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl = "http://localhost:5000/api/auth/"
+  apiUrl = environment.apiUrl+"auth/"
   constructor(
     private httpClient:HttpClient,
     private jwtHelper:JwtHelperService

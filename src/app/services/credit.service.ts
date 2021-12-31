@@ -11,7 +11,7 @@ import { ResponseModel } from '../models/responseModel';
 })
 export class CreditService {
 
-  apiUrl="http://localhost:5000/api/cards/"
+  apiUrl=environment.apiUrl+"cards/"
   constructor(private httpClient:HttpClient) { }
 
   getCardsByUserId(userId:number):Observable<ListResponseModel<Cards>>{
