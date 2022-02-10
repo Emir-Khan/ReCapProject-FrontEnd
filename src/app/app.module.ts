@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,9 +45,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { HasImagePipe } from './pipes/has-image.pipe';
-
-
-
+import { SupportChatComponent } from './components/support-chat/support-chat.component';
+const config : SocketIoConfig= {url:"http://localhost:8002"}
 
 export function tokenGetter() {
   return localStorage.getItem("token")
@@ -83,6 +83,7 @@ export function tokenGetter() {
     UsersComponent,
     UserDetailsComponent,
     HasImagePipe,
+    SupportChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,8 +105,8 @@ export function tokenGetter() {
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     NgxMatMomentModule,
-    
-    
+
+    SocketIoModule.forRoot(config),
     ToastrModule.forRoot({ positionClass: "toast-bottom-right" }),
     JwtModule.forRoot({
       config: {

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Socket.io Sample Pageasd</title>
+
+    <style>
+    
+    </style>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <!-- Bunu kesinlikle yazmamız gerekiyor çünkü birazdan yazacağımız kodlar bu dosyayı referans alarak çalışacaktır. -->
+    <!-- <script src="https://code.jquery.com/jquery-1.11.1.js"></script> -->
+    <!-- İşlerimizi çok kolaylaştırdığı için jquery kütüphanesini çağırıyoruz. -->
+</head>
+
+<body>
+    <ul id="messages">
+        <li [innerHtml]="messages"></li>
+    </ul><!-- Gelen mesajları yazdırmak için bir liste oluşturuyoruz. -->
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Gönder</button>
+        <!-- Forma yazı yazdıktan sonra gönder butonu ile gönderiyoruz. -->
+    </form>
+
+</body>
+
+</html>
