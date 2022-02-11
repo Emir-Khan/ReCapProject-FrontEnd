@@ -21,4 +21,9 @@ export class MessageService {
   get(id: string) {
     this.socket.emit('get', id);
   }
+
+  sendMessage(message:string){
+    this.socket.emit("chat message",message)
+  }
+
 }
