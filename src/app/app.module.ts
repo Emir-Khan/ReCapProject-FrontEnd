@@ -46,6 +46,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { HasImagePipe } from './pipes/has-image.pipe';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
+import { CollepsibleChatComponent } from './components/collepsible-chat/collepsible-chat.component';
 const config : SocketIoConfig= {url:"http://localhost:8002"}
 
 export function tokenGetter() {
@@ -84,6 +85,7 @@ export function tokenGetter() {
     UserDetailsComponent,
     HasImagePipe,
     SupportChatComponent,
+    CollepsibleChatComponent,
   ],
   imports: [
     BrowserModule,
