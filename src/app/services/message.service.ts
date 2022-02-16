@@ -6,24 +6,29 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class MessageService {
-
-  public currentMessage = this.socket.fromEvent<Message>('ready');
-  public allOfThem = this.socket.fromEvent<string[]>('warnEveryone');
+  rooms= this.socket.fromEvent<string[]>("rooms")
 
   constructor(private socket: Socket) { }
 
   connect() {
     this.socket.emit('connection');
   }
+
   disconnect() {
     this.socket.emit('disconnect');
   }
-  get(id: string) {
-    this.socket.emit('get', id);
+
+  join(roomName:string){
+    console.log("joining "+roomName)
+    this.socket.emit("join",roomName)
+  }
+  
+  sendSupportMessage(message:string,roomName:string){
+    this.socket.emit("support message",{"message":message,"roomName":roomName})
   }
 
-  sendMessage(message:string){
-    this.socket.emit("chat message",message)
+  sendMessage(message:string,roomName:string){
+    this.socket.emit("message",{"message":message,"roomName":roomName})
   }
 
 }
