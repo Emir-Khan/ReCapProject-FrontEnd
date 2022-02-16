@@ -1,7 +1,8 @@
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
-import { Subscription } from 'rxjs';
+import { generate, Observable, Subscription } from 'rxjs';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -11,56 +12,64 @@ import { MessageService } from 'src/app/services/message.service';
   encapsulation: ViewEncapsulation.None
 })
 export class SupportChatComponent implements OnInit, OnDestroy {
-
   messages: string = ``;
   message: string;
   usersText:string;
-  private _subscription: Subscription;
+  rooms:string[] =[]
+  chatId:string
 
+  constructor(private messageService: MessageService, private socket: Socket,cookieService:CookieService) {
+    this.chatId = cookieService.get("chatId")
+   }
 
-  /*
-  MessageService, Constructor Injection ile içeriye alınır.
-  */
-  constructor(private messageService: MessageService, private socket: Socket) { }
-
-  /*
-  Bileşen initialize edilirken güncel makale için bir abonelik başlatılır.
-  Böylece gerek bu aboneliğin sahibinin değişiklikleri
-  gerek diğerlerinin değişiklikleri aynı makalede çalışan herkese yansır.
-  */
   ngOnInit() {
     this.connect();
+    this.messageService.join(this.chatId)
 
-    this.socket.on("chat message", (message: any) => {
+    this.socket.on("rooms",(rooms:any)=>{
+      this.rooms=rooms
+    })
+
+    this.generateSupportMessage()
+    this.generateUserMessage()
+  }
+
+  ngOnDestroy() {
+    this.messageService.disconnect();
+  }
+
+  connect() {
+    this.messageService.connect();
+  }
+
+  sendMessage() {
+    console.log(this.chatId)
+    this.messageService.sendSupportMessage(this.message,this.chatId)
+  }
+
+  joinToUserRoom(room:string){
+    this.chatId = room
+    this.messageService.join(this.chatId)
+  }
+
+  generateUserMessage(){
+    this.socket.on("user msg",(message:any)=>{
       if (message != undefined) {
-        this.createUserMessageElements(message);
+        this.createUserMessageElements(message)
       }
+    })
+  }
+
+  generateSupportMessage(){
+    this.socket.on("sup msg", (message: any) => {
+      console.log("message here")
       if (message != undefined) {
         this.createSupportMessageElements(message)
       }
     })
   }
 
-  // Bileşen ölürken üzerinde çalışan makalenin aboneliğinden çıkılır
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
-    this.messageService.disconnect();
-  }
-
-  /*
-   Arayüzdeki keyup olayı ile bağlanmıştır
-  Yani tuştan parmak kaldırdıkça servise bir güncelleme olayı fırlatılır 
-  ki bu tüm abonelerce alınır.
-  */
-  connect() {
-    this.messageService.connect();
-  }
-
-  sendMessage() {
-    this.messageService.sendMessage(this.message)
-  }
-
-  createUserMessageElements(message: string) {
+  private createUserMessageElements(message: string) {
     this.messages+= `<div class="chat-message-left pb-4">
     <div><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Sharon Lessman" width="40" height="40"
             class="rounded-circle mr-1">
@@ -72,7 +81,7 @@ export class SupportChatComponent implements OnInit, OnDestroy {
     </div>`
   }
 
-  createSupportMessageElements(message: string) {
+  private createSupportMessageElements(message: string) {
     this.messages+= `<div class="chat-message-right mb-4">
     <div><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Chris Wood" width="40" height="40"
             class="rounded-circle mr-1">
@@ -94,9 +103,11 @@ export class SupportChatComponent implements OnInit, OnDestroy {
       </div>
     </div>
     </a>`
-    this.socket.on("connect",(data:Message)=>{
+    // başka bir fonksiyon
+    /* this.socket.on("connect",(data:Message)=>{
       // emit it
-    })
+    }) */
   }
+  
 
 }
