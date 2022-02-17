@@ -1,4 +1,4 @@
 export interface Message{
-    id:number
-    content:string
+    id: string;
+    doc:string
 }
