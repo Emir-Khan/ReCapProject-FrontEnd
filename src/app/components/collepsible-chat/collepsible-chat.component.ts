@@ -36,7 +36,7 @@ export class CollepsibleChatComponent implements OnInit, AfterContentInit {
         this.generateSelfMessage(message)
       }
     })  
-  }
+  } 
 
   ngAfterContentInit(): void {
     this.load()
