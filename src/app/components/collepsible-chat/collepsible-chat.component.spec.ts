@@ -17,7 +17,7 @@ describe('CollepsibleChatComponent', () => {
     fixture = TestBed.createComponent(CollepsibleChatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }); 
 
   it('should create', () => {
     expect(component).toBeTruthy();
