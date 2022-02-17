@@ -41,7 +41,7 @@ export class SupportChatComponent implements OnInit, OnDestroy {
   connect() {
     this.messageService.connect();
   }
-
+ 
   sendMessage() {
     console.log(this.chatId)
     this.messageService.sendSupportMessage(this.message,this.chatId)
