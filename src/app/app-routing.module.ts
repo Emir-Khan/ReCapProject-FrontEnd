@@ -19,6 +19,7 @@ import { AccessGuard } from './guards/access.guard';
 import { LoginGuard } from './guards/login.guard';
 import { UsersComponent } from './components/admin-operations/users/users.component';
 import { UserDetailsComponent } from './components/admin-operations/user-details/user-details.component';
+import { SupportChatComponent } from './components/support-chat/support-chat.component';
 
 
 const routes: Routes = [
@@ -44,7 +45,9 @@ const routes: Routes = [
   {path:"cars/:carId/payment",component:PaymentComponent,canActivate:[LoginGuard]},
 
   {path:"login",component:LoginComponent},
-  {path:"register",component:RegisterComponent}
+  {path:"register",component:RegisterComponent},
+
+  {path:"support",component:SupportChatComponent}
 ];
 
 @NgModule({
