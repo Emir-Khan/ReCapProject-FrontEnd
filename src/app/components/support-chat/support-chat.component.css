@@ -1,3 +1,6 @@
+a:hover{
+    cursor: pointer;
+}
 .chat-online {
     color: #34ce57
 }

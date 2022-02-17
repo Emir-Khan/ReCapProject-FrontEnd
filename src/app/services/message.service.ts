@@ -6,16 +6,15 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class MessageService {
-  rooms= this.socket.fromEvent<string[]>("rooms")
 
   constructor(private socket: Socket) { }
 
-  connect() {
+  async connect() {
     this.socket.emit('connection');
   }
 
   disconnect() {
-    this.socket.emit('disconnect');
+    this.socket.emit('disconnectx');
   }
 
   join(roomName:string){

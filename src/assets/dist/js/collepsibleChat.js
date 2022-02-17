@@ -110,3 +110,7 @@ $(function () {
     $(".chat-box").toggle("scale");
   });
 });
+window.onbeforeunload = function (e) {
+  var socket = io()
+  socket.emit('asd', "dsa")
+};

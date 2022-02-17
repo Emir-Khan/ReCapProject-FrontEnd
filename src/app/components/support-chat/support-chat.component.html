@@ -13,17 +13,20 @@
                         <div class="d-flex align-items-start"><img
                                 src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Vanessa Tucker" width="40"
                                 height="40" class="rounded-circle mr-1">
-                            <div class="flex-grow-1 ml-3"> IM STATIC <div class="small"><span aria-hidden="true"
-                                        class="fas fa-circle chat-online"></span> Online</div>
+                            <div class="flex-grow-1 ml-3"> IM STATIC <div class="small">
+                                <span aria-hidden="true" class="fas fa-circle chat-online"></span> Online
+                            </div>
                             </div>
                         </div>
                     </a>
-                    <a *ngFor="let room of rooms" (click)="joinToUserRoom(room)" class="list-group-item list-group-item-action border-0">
+                    <a *ngFor="let room of rooms" (click)="joinToUserRoom(room.roomName)" class="list-group-item list-group-item-action border-0">
                         <div class="d-flex align-items-start"><img
                                 src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Christina Mason"
                                 width="40" height="40" class="rounded-circle mr-1">
-                            <div class="flex-grow-1 ml-3"> {{room}} <div class="small"><span aria-hidden="true"
-                                        class="fas fa-circle chat-offline"></span> Offline</div>
+                            <div class="flex-grow-1 ml-3"> {{room.roomName}} <div class="small">
+                                <div *ngIf="room.status" class="online-room"><span  aria-hidden="true" class="fas fa-circle chat-online"></span> Online</div>
+                                <div *ngIf="!room.status" class="offline-room"><span  aria-hidden="true" class="fas fa-circle chat-offline"></span> Offline</div>
+                            </div>
                             </div>
                         </div>
                     </a>

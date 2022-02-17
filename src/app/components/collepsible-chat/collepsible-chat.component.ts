@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { Guid } from 'guid-typescript';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
@@ -10,16 +10,17 @@ import { MessageService } from 'src/app/services/message.service';
   styleUrls: ['./collepsible-chat.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class CollepsibleChatComponent implements OnInit, AfterContentInit {
+export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContentInit {
   messages: string = ``;
   message: string
-  chatId:string
+  chatId: string
 
-  constructor(private renderer: Renderer2, private socket: Socket, private messageService: MessageService,cookieService: CookieService) {
+  constructor(private renderer: Renderer2, private socket: Socket, private messageService: MessageService, cookieService: CookieService) {
     if (cookieService.get("chatId") == "" || cookieService.get("guestId") == null) {
-      cookieService.set("chatId", Guid.create().toString(),{expires:100})
+      cookieService.set("chatId", Guid.create().toString(), { expires: 100 })
     }
     this.chatId = cookieService.get("chatId")
+    console.log(this.chatId)
   }
 
   ngOnInit(): void {
@@ -35,15 +36,16 @@ export class CollepsibleChatComponent implements OnInit, AfterContentInit {
       if (message != undefined) {
         this.generateSelfMessage(message)
       }
-    })  
-<<<<<<< HEAD
-  } 
-=======
+    })
+
   }
->>>>>>> 380f6edceb9b2bd7d9867a2ed6ad1e640b4f375b
 
   ngAfterContentInit(): void {
     this.load()
+  }
+
+  ngOnDestroy(): void {
+    this.messageService.disconnect()
   }
 
   load() {
@@ -72,6 +74,6 @@ export class CollepsibleChatComponent implements OnInit, AfterContentInit {
   }
 
   sendMessage() {
-    this.messageService.sendMessage(this.message,this.chatId)
+    this.messageService.sendMessage(this.message, this.chatId)
   }
 }
