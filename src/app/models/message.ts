@@ -1,4 +1,5 @@
 export interface Message{
-    id: string;
-    doc:string
+    message:string
+    date:Date
+    class:string
 }

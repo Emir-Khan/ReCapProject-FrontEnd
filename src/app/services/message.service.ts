@@ -21,6 +21,10 @@ export class MessageService {
     console.log("joining "+roomName)
     this.socket.emit("join",roomName)
   }
+  joinToRoom(roomName:string){
+    console.log("joining to room "+roomName)
+    this.socket.emit("join to room",roomName)
+  }
   
   sendSupportMessage(message:string,roomName:string){
     this.socket.emit("support message",{"message":message,"roomName":roomName})

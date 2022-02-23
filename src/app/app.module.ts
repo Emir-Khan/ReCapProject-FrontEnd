@@ -48,6 +48,7 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
 import { HasImagePipe } from './pipes/has-image.pipe';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
 import { CollepsibleChatComponent } from './components/collepsible-chat/collepsible-chat.component';
+import { DateSorterPipe } from './pipes/date-sorter.pipe';
 const config : SocketIoConfig= {url:"http://localhost:8002",options:{timeout:15000}}
 
 export function tokenGetter() {
@@ -87,6 +88,7 @@ export function tokenGetter() {
     HasImagePipe,
     SupportChatComponent,
     CollepsibleChatComponent,
+    DateSorterPipe,
   ],
   imports: [
     BrowserModule,

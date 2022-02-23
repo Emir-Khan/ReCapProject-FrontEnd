@@ -2,6 +2,7 @@ import { AfterContentInit, Component, OnDestroy, OnInit, Renderer2, ViewEncapsul
 import { Guid } from 'guid-typescript';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
+import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { MessageService } from 'src/app/services/message.service';
   encapsulation: ViewEncapsulation.None
 })
 export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContentInit {
-  messages: string = ``;
+  messages: Message[] = [];
   message: string
   chatId: string
 
@@ -26,18 +27,9 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   ngOnInit(): void {
     this.messageService.connect()
     this.messageService.join(this.chatId)
-    this.socket.on("sup msg", (message: any) => {
-      console.log("messg")
-      if (message != undefined) {
-        this.generateUserMessage(message)
-      }
-    })
-    this.socket.on("user msg", (message: any) => {
-      if (message != undefined) {
-        this.generateSelfMessage(message)
-      }
-    })
-
+    this.getOldMessages()
+    this.generateSelfMessage()
+    this.generateSupportMessage()
   }
 
   ngAfterContentInit(): void {
@@ -57,20 +49,50 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
     }
     this.renderer.appendChild(document.querySelector("body"), script);
   }
+  
+  getOldMessages(){
+    this.socket.on("get message", (messages: any) => {
+      console.log(messages)
+      let keys = Object.keys(messages)
+      for (let i = 1, index = 0; i < Object.keys(messages).length + 1; i++, index++) {
+        if (messages[keys[index]].sender == "support") {
+          this.createSupportMessage(messages[keys[index]].message)
+        } else {
+          this.createSelfMessage(messages[keys[index]].message)
+        }
+      }
 
-  generateSelfMessage(message: string) {
-    this.messages += `
-    <div id="cm-msg-1" class="chat-msg self" style=""> <span class="msg-avatar"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></span>
-    <div class="cm-msg-text">`+ message + `</div>
-    </div>
-    `
+    })
   }
 
-  generateUserMessage(message: string) {
-    this.messages += `<div id="cm-msg-2" class="chat-msg user" style=""> <span class="msg-avatar"> 
-    <img src="https://bootdey.com/img/Content/avatar/avatar3.png"> </span>
+  generateSelfMessage(){
+    this.socket.on("user msg", (message: any) => {
+      if (message != undefined) {
+        this.createSelfMessage(message)
+      }
+    })
+  }
+  
+  generateSupportMessage(){
+    this.socket.on("sup msg", (message: any) => {
+      if (message != undefined) {
+        this.createSupportMessage(message)
+      }
+    })
+  }
+
+  private createSelfMessage(message: string) {
+    this.messages.push({message:`
+     <span class="msg-avatar"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></span>
     <div class="cm-msg-text">`+ message + `</div>
-  </div>`
+    `,date:new Date(),class:"chat-msg self"})
+  }
+
+  private createSupportMessage(message: string) {
+    this.messages.push({message:` <span class="msg-avatar"> 
+    <img src="https://bootdey.com/img/Content/avatar/avatar3.png"> </span>
+    <div class="cm-msg-text">`+ message + `</div>`,
+    date:new Date(),class:"chat-msg user"})
   }
 
   sendMessage() {

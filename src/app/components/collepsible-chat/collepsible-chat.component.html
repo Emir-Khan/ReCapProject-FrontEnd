@@ -13,8 +13,10 @@
     <div class="chat-box-body">
       <div class="chat-box-overlay">
       </div>
-      <div [innerHtml]="messages" class="chat-logs">
+      <div class="chat-logs">
+        <div [innerHtml]="msg.message" *ngFor="let msg of messages" id="cm-msg-2" [class]="msg.class">
 
+        </div>
       </div> 
       <!--chat-log -->
     </div>
