@@ -29,8 +29,7 @@ export class NaviComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private toastrService: ToastrService,
-    private jwtHelper:JwtHelperService
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {

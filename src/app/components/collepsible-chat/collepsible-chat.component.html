@@ -13,14 +13,28 @@
     <div class="chat-box-body">
       <div class="chat-box-overlay">
       </div>
-      <div class="chat-logs">
+      <div *ngIf="!hasInfo" class="chat-logs">
+        <form>
+          <div class="mb-3">
+            <label for="userName" class="form-label">Your Name</label>
+            <input type="text" [(ngModel)]="userName" name="userName" class="form-control" id="userName" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" [(ngModel)]="userEmail" name="userEmail" class="form-control" id="email">
+          </div>
+          <button type="submit" class="btn btn-primary w-100" (click)="sendUserData()">Contact With Support</button>
+        </form>
+      </div>
+      <div *ngIf="hasInfo" class="chat-logs">
         <div [innerHtml]="msg.message" *ngFor="let msg of messages" id="cm-msg-2" [class]="msg.class">
 
         </div>
       </div> 
       <!--chat-log -->
     </div>
-    <div class="chat-input">
+    <div *ngIf="hasInfo" class="chat-input">
       <form>
         <input [(ngModel)]="message" name="chatbox" type="text" id="chat-input" placeholder="Send a message..." />
         <button (click)="sendMessage()" type="submit" class="chat-submit" id="chat-submit"><i class="material-icons">send</i></button>

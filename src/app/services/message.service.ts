@@ -17,6 +17,11 @@ export class MessageService {
     this.socket.emit('disconnectx');
   }
 
+  joinTwoParam(roomName:string,userData:string){
+    console.log("joining "+roomName)
+    this.socket.emit("join",roomName,userData)
+  }
+
   join(roomName:string){
     console.log("joining "+roomName)
     this.socket.emit("join",roomName)
@@ -26,12 +31,12 @@ export class MessageService {
     this.socket.emit("join to room",roomName)
   }
   
-  sendSupportMessage(message:string,roomName:string){
-    this.socket.emit("support message",{"message":message,"roomName":roomName})
+  sendSupportMessage(message:string,roomName:string,userData:string){
+    this.socket.emit("support message",{"message":message,"roomName":roomName},userData)
   }
 
-  sendMessage(message:string,roomName:string){
-    this.socket.emit("message",{"message":message,"roomName":roomName})
+  sendMessage(message:string,roomName:string,userData:any){
+    this.socket.emit("message",{"message":message,"roomName":roomName},userData)
   }
 
 }

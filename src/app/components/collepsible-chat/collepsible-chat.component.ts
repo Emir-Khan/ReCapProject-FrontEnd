@@ -15,21 +15,33 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   messages: Message[] = [];
   message: string
   chatId: string
+  hasInfo:boolean =false
+  userEmail:string
+  userName:string
+  userData:string
 
-  constructor(private renderer: Renderer2, private socket: Socket, private messageService: MessageService, cookieService: CookieService) {
+  constructor(private renderer: Renderer2, private socket: Socket, private messageService: MessageService,private cookieService: CookieService) {
     if (cookieService.get("chatId") == "" || cookieService.get("guestId") == null) {
       cookieService.set("chatId", Guid.create().toString(), { expires: 100 })
+      this.chatId= cookieService.get("chatId")
     }
-    this.chatId = cookieService.get("chatId")
-    console.log(this.chatId)
+
+    if (cookieService.get("userData")!=null&&cookieService.get("userData")!="") {
+      this.hasInfo = true
+      this.userData = cookieService.get("userData")
+      this.chatId= cookieService.get("chatId")
+    }
   }
 
   ngOnInit(): void {
-    this.messageService.connect()
-    this.messageService.join(this.chatId)
-    this.getOldMessages()
-    this.generateSelfMessage()
-    this.generateSupportMessage()
+    if (this.hasInfo==true) {
+      this.messageService.connect()
+      this.messageService.joinTwoParam(this.chatId,this.userData)
+      this.messageService.joinToRoom(this.chatId)
+      this.getOldMessages()
+      this.generateSelfMessage()
+      this.generateSupportMessage()
+    }
   }
 
   ngAfterContentInit(): void {
@@ -38,6 +50,28 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
 
   ngOnDestroy(): void {
     this.messageService.disconnect()
+  }
+
+  sendMessage() {
+    if (this.message != "" && this.message != null) {
+      this.messageService.sendMessage(this.message, this.chatId,this.userData)
+    }
+  }
+
+  sendUserData(){
+    if ((this.userEmail != null && this.userEmail != "")&&(this.userName != null && this.userName != "")) {
+
+      this.cookieService.set("userData",JSON.stringify({name:this.userName,email:this.userEmail}))
+      this.userData = this.cookieService.get("userData")
+      this.hasInfo = true
+
+      this.messageService.connect()
+      this.messageService.joinTwoParam(this.chatId,this.userData)
+      this.messageService.joinToRoom(this.chatId)
+      this.getOldMessages()
+      this.generateSelfMessage()
+      this.generateSupportMessage()
+    }
   }
 
   load() {
@@ -49,8 +83,8 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
     }
     this.renderer.appendChild(document.querySelector("body"), script);
   }
-  
-  getOldMessages(){
+
+  getOldMessages() {
     this.socket.on("get message", (messages: any) => {
       console.log(messages)
       let keys = Object.keys(messages)
@@ -65,15 +99,15 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
     })
   }
 
-  generateSelfMessage(){
+  generateSelfMessage() {
     this.socket.on("user msg", (message: any) => {
       if (message != undefined) {
         this.createSelfMessage(message)
       }
     })
   }
-  
-  generateSupportMessage(){
+
+  generateSupportMessage() {
     this.socket.on("sup msg", (message: any) => {
       if (message != undefined) {
         this.createSupportMessage(message)
@@ -82,20 +116,20 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   }
 
   private createSelfMessage(message: string) {
-    this.messages.push({message:`
+    this.messages.push({
+      message: `
      <span class="msg-avatar"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></span>
     <div class="cm-msg-text">`+ message + `</div>
-    `,date:new Date(),class:"chat-msg self"})
+    `, date: new Date(), class: "chat-msg self"
+    })
   }
 
   private createSupportMessage(message: string) {
-    this.messages.push({message:` <span class="msg-avatar"> 
+    this.messages.push({
+      message: ` <span class="msg-avatar"> 
     <img src="https://bootdey.com/img/Content/avatar/avatar3.png"> </span>
     <div class="cm-msg-text">`+ message + `</div>`,
-    date:new Date(),class:"chat-msg user"})
-  }
-
-  sendMessage() {
-    this.messageService.sendMessage(this.message, this.chatId)
+      date: new Date(), class: "chat-msg user"
+    })
   }
 }

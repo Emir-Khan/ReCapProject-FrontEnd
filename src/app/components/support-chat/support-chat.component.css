@@ -13,6 +13,8 @@ a:hover{
     display: flex;
     flex-direction: column;
     max-height: 800px;
+}
+.scrolled{
     overflow-y: scroll
 }
 

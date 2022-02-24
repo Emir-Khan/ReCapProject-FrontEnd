@@ -24,7 +24,7 @@
                         <div class="d-flex align-items-start"><img
                                 src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Christina Mason"
                                 width="40" height="40" class="rounded-circle mr-1">
-                            <div class="flex-grow-1 ml-3"> {{room.roomName}} <div class="small">
+                            <div class="flex-grow-1 ml-3"> {{room.name}} <div class="small">{{room.roomName}}<br>{{room.email}}
                                     <div class="online-room"><span aria-hidden="true"
                                             class="fas fa-circle chat-online"></span> Online</div>
 
@@ -38,7 +38,7 @@
                                 src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Christina Mason"
                                 width="40" height="40" class="rounded-circle mr-1">
                             <div class="flex-grow-1 ml-3"> {{room.roomName}} <div class="small">
-
+                                {{room.name}}
                                     <div class="offline-room"><span aria-hidden="true"
                                             class="fas fa-circle chat-offline"></span> Offline</div>
                                 </div>
@@ -52,7 +52,7 @@
                         <div class="d-flex align-items-center py-1">
                             <div class="position-relative"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"
                                     alt="Sharon Lessman" width="40" height="40" class="rounded-circle mr-1"></div>
-                            <div class="flex-grow-1 pl-3"><strong>Sharon Lessman</strong>
+                            <div class="flex-grow-1 pl-3"><strong>{{selectedUser}}</strong>
                                 <div class="text-muted small"><em>Typing...</em></div>
                             </div>
                             <div><button class="btn btn-primary btn-lg mr-1 px-3"><svg
@@ -79,15 +79,15 @@
                                     </svg></button></div>
                         </div>
                     </div>
-                    <div class="position-relative" style="height: 80vh;">
-                        <div class="chat-messages p-4" style="height: 80vh;">
+                    <div #scrollMe class="position-relative scrolled" style="height: 80vh;">
+                        <div  class="chat-messages p-4" style="height: 80vh;">
                             <div [innerHtml]="msg.message" *ngFor="let msg of messages |dateSorter" [class]="msg.class">
 
                             </div>
                         </div>
                     </div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
-                        <div class="input-group"><input [(ngModel)]="message" type="text"
+                        <div class="input-group"><input (keyup.enter)="sendMessage()" [(ngModel)]="message" name="message" type="text"
                                 placeholder="Type your message" class="form-control"><button (click)="sendMessage()"
                                 class="btn btn-primary">Send</button></div>
                     </div>
