@@ -7,7 +7,7 @@
 
   <div class="chat-box">
     <div class="chat-box-header">
-      ChatBot
+      Support Chat
       <span class="chat-box-toggle"><i class="material-icons">close</i></span>
     </div>
     <div class="chat-box-body">
@@ -36,7 +36,7 @@
     </div>
     <div *ngIf="hasInfo" class="chat-input">
       <form>
-        <input [(ngModel)]="message" name="chatbox" type="text" id="chat-input" placeholder="Send a message..." />
+        <input [(ngModel)]="message" (input)="onKeyDown($event)" name="chatbox" type="text" id="chat-input" placeholder="Send a message..." />
         <button (click)="sendMessage()" type="submit" class="chat-submit" id="chat-submit"><i class="material-icons">send</i></button>
       </form>
     </div>

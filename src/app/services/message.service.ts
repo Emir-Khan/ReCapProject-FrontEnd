@@ -39,4 +39,8 @@ export class MessageService {
     this.socket.emit("message",{"message":message,"roomName":roomName},userData)
   }
 
+  isTyping(typing:boolean){
+    this.socket.emit("is typing",typing)
+  }
+
 }

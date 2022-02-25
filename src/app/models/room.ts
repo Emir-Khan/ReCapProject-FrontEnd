@@ -3,4 +3,5 @@ export interface Room{
     status:boolean
     name:string
     email:string
+    unreadedCount:number
 }

@@ -19,6 +19,9 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   userEmail:string
   userName:string
   userData:string
+  userTyping:boolean = false
+  typing:boolean = false
+  timeout:any
 
   constructor(private renderer: Renderer2, private socket: Socket, private messageService: MessageService,private cookieService: CookieService) {
     if (cookieService.get("chatId") == "" || cookieService.get("guestId") == null) {
@@ -55,13 +58,14 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   sendMessage() {
     if (this.message != "" && this.message != null) {
       this.messageService.sendMessage(this.message, this.chatId,this.userData)
+      this.message = ""
     }
   }
 
   sendUserData(){
     if ((this.userEmail != null && this.userEmail != "")&&(this.userName != null && this.userName != "")) {
 
-      this.cookieService.set("userData",JSON.stringify({name:this.userName,email:this.userEmail}))
+      this.cookieService.set("userData",JSON.stringify({name:this.userName,email:this.userEmail}), { expires: 100 })
       this.userData = this.cookieService.get("userData")
       this.hasInfo = true
 
@@ -84,8 +88,28 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
     this.renderer.appendChild(document.querySelector("body"), script);
   }
 
+  isTyping() {
+    this.socket.on("typing", (bool: boolean) => {
+      this.userTyping = bool
+    })
+  }
+
+
+  onKeyDown(event: any) {
+    if (this.typing == false && event.key !== "Enter" && event.key !=="Alt") {
+      this.typing = true
+      this.socket.emit("is typing", this.typing,this.chatId)
+    } else {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.typing = false;
+      this.socket.emit("is typing", this.typing,this.chatId)
+    }, 600);
+  }
+
   getOldMessages() {
-    this.socket.on("get message", (messages: any) => {
+    this.socket.once("get message", (messages: any) => {
       console.log(messages)
       let keys = Object.keys(messages)
       for (let i = 1, index = 0; i < Object.keys(messages).length + 1; i++, index++) {
@@ -118,7 +142,7 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   private createSelfMessage(message: string) {
     this.messages.push({
       message: `
-     <span class="msg-avatar"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></span>
+     <span class="msg-avatar"><img src="assets/img/default-guest.jpg"></span>
     <div class="cm-msg-text">`+ message + `</div>
     `, date: new Date(), class: "chat-msg self"
     })
@@ -127,7 +151,7 @@ export class CollepsibleChatComponent implements OnInit, OnDestroy, AfterContent
   private createSupportMessage(message: string) {
     this.messages.push({
       message: ` <span class="msg-avatar"> 
-    <img src="https://bootdey.com/img/Content/avatar/avatar3.png"> </span>
+    <img src="assets/img/car-logo-default.jpg"> </span>
     <div class="cm-msg-text">`+ message + `</div>`,
       date: new Date(), class: "chat-msg user"
     })
