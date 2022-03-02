@@ -1,8 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
-import { generate, Observable, Subscription } from 'rxjs';
 import { Message } from 'src/app/models/message';
 import { Room } from 'src/app/models/room';
 import { User } from 'src/app/models/user';
@@ -44,7 +43,6 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
         cookieService.set("userData", JSON.stringify({ name: this.user.firstName, email: this.user.email }), { expires: 100 })
         this.userData = cookieService.get("userData")
       })
-
     }
   }
 
@@ -57,12 +55,16 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.generateUserMessage()
     this.getOldMessages()
     this.isTyping()
+    this.updateUndreadedCount()
+    this.messageService.openedPage("")
+    window.onbeforeunload = () => this.ngOnDestroy();
   }
 
   ngOnDestroy() {
+    this.messageService.openedPage("")
     this.messageService.disconnect();
   }
-
+  
   ngAfterViewChecked(): void {
     this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
   }
@@ -72,16 +74,16 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   getOnlineRooms() {
-    this.socket.on("online rooms", (roomsData: string[], unreadedMessageRoomName: string, unreadedMessageCount: number) => {
-      console.log(unreadedMessageRoomName)
+    this.socket.on("online rooms", (roomsData: Room[]) => {
+      console.log(roomsData)
       let data = [];
       for (let i = 0; i < roomsData.length; i++) {
-        console.log(JSON.parse(roomsData[i]))
-        let roomData = JSON.parse(roomsData[i])
-        if (roomData.roomName == unreadedMessageRoomName) {
-          data[i] = { roomName: roomData.roomName, name: roomData.name,unreadedCount:unreadedMessageCount, email: roomData.email, status: true }
+        console.log(roomsData[i])
+
+        if (roomsData[i].unreadedCount != null) {
+          data[i] = { roomName: roomsData[i].roomName, name: roomsData[i].name,unreadedCount:roomsData[i].unreadedCount, email: roomsData[i].email, status: true }
         }else{
-          data[i] = { roomName: roomData.roomName, name: roomData.name,unreadedCount:0, email: roomData.email, status: true }
+          data[i] = { roomName: roomsData[i].roomName, name: roomsData[i].name,unreadedCount:0, email: roomsData[i].email, status: true }
         }
       }
       console.log(data)
@@ -90,19 +92,37 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   getOfflineRooms() {
-    this.socket.on("offline rooms", (roomsData: string[], unreadedMessageRoomName: string, unreadedMessageCount: number) => {
+    this.socket.on("offline rooms", (roomsData: Room[]) => {
 
+      console.log(roomsData)
       let data = [];
       for (let i = 0; i < roomsData.length; i++) {
-        console.log(JSON.parse(roomsData[i]))
-        let roomData = JSON.parse(roomsData[i])
-        if (roomData.roomName == unreadedMessageRoomName) {
-          data[i] = { roomName: roomData.roomName, name: roomData.name,unreadedCount:unreadedMessageCount, email: roomData.email, status: false }
+        console.log(roomsData[i])
+
+        if (roomsData[i].unreadedCount != null) {
+          data[i] = { roomName: roomsData[i].roomName, name: roomsData[i].name,unreadedCount:roomsData[i].unreadedCount, email: roomsData[i].email, status: false }
         }else{
-          data[i] = { roomName: roomData.roomName, name: roomData.name,unreadedCount:0, email: roomData.email, status: false }
+          data[i] = { roomName: roomsData[i].roomName, name: roomsData[i].name,unreadedCount:0, email: roomsData[i].email, status: false }
         }
       }
+      console.log(data)
       this.offRooms = data
+    })
+  }
+
+  updateUndreadedCount(){
+    this.socket.on("unreaded count update",(room:Room)=>{
+      console.log(room)
+      for (const iterator of this.onRooms) {
+        if (iterator.roomName == room.roomName) {
+          iterator.unreadedCount = room.unreadedCount
+        }
+      }
+      for (const iterator of this.offRooms) {
+        if (iterator.roomName == room.roomName) {
+          iterator.unreadedCount = room.unreadedCount
+        }
+      }
     })
   }
 
@@ -114,10 +134,13 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.message = ""
   }
 
-  joinToUserRoom(room: string) {
-    this.selectedUser = room
-    this.chatId = room
+  joinToUserRoom(room: Room) {
+    this.selectedUser = room.roomName
+    this.chatId = room.roomName
+    this.messageService.openedPage(this.chatId)
     this.messageService.joinToRoom(this.chatId)
+    this.messageService.readUserMessages(room)
+    
   }
 
   getOldMessages() {
@@ -148,13 +171,13 @@ export class SupportChatComponent implements OnInit, OnDestroy, AfterViewChecked
   onKeyDown(event: any) {
     if (this.typing == false && event.key !== "Enter") {
       this.typing = true
-      this.socket.emit("is typing", this.typing, this.chatId)
+      this.socket.emit("is typing", this.typing, this.cookieId)
     } else {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
       this.typing = false;
-      this.socket.emit("is typing", this.typing, this.chatId)
+      this.socket.emit("is typing", this.typing, this.cookieId)
     }, 600);
   }
 
