@@ -47,7 +47,7 @@ const routes: Routes = [
   {path:"login",component:LoginComponent},
   {path:"register",component:RegisterComponent},
 
-  {path:"support",component:SupportChatComponent}
+  {path:"support",component:SupportChatComponent,canActivate:[LoginGuard,AccessGuard]}
 ];
 
 @NgModule({
