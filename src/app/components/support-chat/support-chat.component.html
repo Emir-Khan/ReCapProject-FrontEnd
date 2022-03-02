@@ -52,7 +52,7 @@
                 <div class="col-12 col-lg-7 col-xl-9" style="height: 98vh;">
                     <div class="py-2 px-4 border-bottom d-none d-lg-block">
                         <div class="d-flex align-items-center py-1">
-                            <div class="position-relative"><img src="assets/img/default-guest.jpg"
+                            <div class="position-relative"><img *ngIf="selectedUser" src="assets/img/default-guest.jpg"
                                     alt="Sharon Lessman" width="40" height="40" class="rounded-circle mr-1"></div>
                             <div class="flex-grow-1 pl-3"><strong>{{selectedUser}}</strong>
                                 <div *ngIf="userTyping" class="text-muted small"><em>Typing...</em></div>
