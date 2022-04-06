@@ -75,7 +75,7 @@ export class AdminBrandComponent implements OnInit {
           this.getBrands();
         },
         (responseErr) => {
-          this.toastrService.error(responseErr.status==400?"First Select A brand":"", 'Hata');
+          this.toastrService.error(responseErr.error.Errors[0].ErrorMessage);
         }
       );
     } else {
